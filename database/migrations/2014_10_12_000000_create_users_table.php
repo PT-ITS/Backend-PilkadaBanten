@@ -19,18 +19,6 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('alamat');
-            $table->string('noHP');
-            $table->enum('level', [
-                '0', // surveyour
-                '1', // admin
-                '2' // pengelola usaha
-                ])->default('0');
-            $table->enum('status', [
-                '-', // belum verifikasi
-                '0', // verifikasi
-                '1' // validasi
-                ])->default('0');
             $table->rememberToken();
             $table->timestamps();
         });

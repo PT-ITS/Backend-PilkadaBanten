@@ -22,9 +22,7 @@ class AuthController extends Controller
         $validator = Validator::make(request()->all(), [
             'name' => 'required',
             'email' => 'required|email|unique:users',
-            'password' => 'required',
-            'alamat' => 'required',
-            'noHP' => 'required'
+            'password' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -35,8 +33,6 @@ class AuthController extends Controller
             'name' => request('name'),
             'email' => request('email'),
             'password' => bcrypt(request('password')),
-            'alamat' => request('alamat'),
-            'noHP' => request('noHP'),
         ]);
 
         if ($user) {
@@ -65,7 +61,6 @@ class AuthController extends Controller
         $customClaims = [
             'id' => $user->id,
             'name' => $user->name,
-            'level' => $user->level,
         ];
 
         $tokenWithClaims = JWTAuth::claims($customClaims)->fromUser($user);
@@ -118,100 +113,9 @@ class AuthController extends Controller
             'access_token' => $token,
             'sub' => $user->id,
             'name' => $user->name,
-            'level' => $user->level,
             'iat' => now()->timestamp,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
         ]);
-    }
-
-    public function listPengguna()
-    {
-        try {
-            $result = User::where('level', '0')
-                ->get();
-            return response()->json(
-                [
-                    'message' => 'data pengguna ditemukan',
-                    'data' => $result
-                ],
-                200
-            );
-        } catch (\Exception  $e) {
-            return response()->json([
-                'message' => $e->getMessage(),
-                'data' => null
-            ], 401);
-        }
-    }
-
-    public function listPengelola()
-    {
-        try {
-            $result = User::where('level', '2')
-                ->get();
-            return response()->json(
-                [
-                    'message' => 'data pengelola ditemukan',
-                    'data' => $result
-                ],
-                200
-            );
-        } catch (\Exception  $e) {
-            return response()->json([
-                'message' => $e->getMessage(),
-                'data' => null
-            ], 401);
-        }
-    }
-
-    public function update(Request $request, $id)
-    {
-        $user = User::find($id);
-
-        if (!$user) {
-            return response()->json([
-                'message' => 'User not found',
-                'data' => null
-            ], 404);
-        }
-
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,' . $id,
-            'alamat' => 'required',
-            'noHP' => 'required'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 400);
-        }
-
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->alamat = $request->input('alamat');
-        $user->noHP = $request->input('noHP');
-
-        $user->save();
-
-        return response()->json([
-            'message' => 'success',
-            'data' => $user
-        ], 200);
-    }
-
-    public function delete($id)
-    {
-        $data = User::find($id);
-        if ($data) {
-            $data->delete();
-            return response()->json([
-                'message' => 'success',
-
-            ], 200);
-        }
-        return response()->json([
-            'message' => 'data not found'
-        ], 404);
     }
 }
