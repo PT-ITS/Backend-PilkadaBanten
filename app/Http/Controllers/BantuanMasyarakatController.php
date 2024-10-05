@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Services\BantuanMasyarakatService;
 use App\Imports\ImportBantuanMasyarakat;
 use App\Models\bantuan_masyarakat;
-use App\Models\Karyawan;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -43,7 +43,7 @@ class BantuanMasyarakatController extends Controller
         );
     }
 
-    public function importBantuanMasyarakat(Request $request)
+    public function importDataBantuanMasyarakat(Request $request)
     {
         $request->validate([
             'file' => 'required|mimes:xlsx,xls',
@@ -58,10 +58,16 @@ class BantuanMasyarakatController extends Controller
             $failDataCount = 0;
 
             foreach ($importedData as $data) {
+                if (is_numeric($data['tanggal'])) {
+                    $tanggal = Date::excelToDateTimeObject($data['tanggal'])->format('Y-m-d');
+                } else {
+                    $tanggal = $data['tanggal']; // Jika sudah format tanggal, gunakan apa adanya
+                }
+
                 // Lakukan validasi atau manipulasi data sesuai kebutuhan
                 $karyawan = new bantuan_masyarakat([
                     'pelaksana'  => $data['pelaksana'],
-                    'tanggal' => $data['tanggal'],
+                    'tanggal' => $tanggal,
                     'lokasi' => $data['lokasi'],
                     'jenis_barang' => $data['jenis_barang'],
                     'jumlah_yang_disalurkan' => $data['jumlah_yang_disalurkan'],
@@ -93,13 +99,13 @@ class BantuanMasyarakatController extends Controller
     {
         // Validasi data bantuanMasyarakat
         $validateBantuanMasyarakatData = $request->validate([
-            'bantuanMasyarakat.pelaksana' => 'required',
-            'bantuanMasyarakat.tanggal' => 'required',
-            'bantuanMasyarakat.lokasi' => 'required',
-            'bantuanMasyarakat.jenis_barang' => 'required',
-            'bantuanMasyarakat.jumlah_yang_disalurkan' => 'required',
-            'bantuanMasyarakat.sasaran_penerima' => 'required',
-            'bantuanMasyarakat.penanggung_jawab' => 'required',
+            'pelaksana' => 'required',
+            'tanggal' => 'required',
+            'lokasi' => 'required',
+            'jenis_barang' => 'required',
+            'jumlah_yang_disalurkan' => 'required',
+            'sasaran_penerima' => 'required',
+            'penanggung_jawab' => 'required',
         ]);
 
         DB::beginTransaction();
@@ -107,7 +113,7 @@ class BantuanMasyarakatController extends Controller
         try {
             // Simpan data bantuanMasyarakat
             $bantuanMasyarakat = new bantuan_masyarakat();
-            $bantuanMasyarakat->fill($validateBantuanMasyarakatData['bantuanMasyarakat']);
+            $bantuanMasyarakat->fill($validateBantuanMasyarakatData);
             $bantuanMasyarakat->save();
 
             DB::commit();
