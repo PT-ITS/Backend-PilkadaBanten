@@ -65,7 +65,7 @@ class BantuanMasyarakatController extends Controller
                 }
 
                 // Lakukan validasi atau manipulasi data sesuai kebutuhan
-                $karyawan = new bantuan_masyarakat([
+                $dataBantuanMasyarakat = new bantuan_masyarakat([
                     'pelaksana'  => $data['pelaksana'],
                     'tanggal' => $tanggal,
                     'lokasi' => $data['lokasi'],
@@ -76,7 +76,7 @@ class BantuanMasyarakatController extends Controller
                 ]);
 
                 // Coba simpan user ke database
-                if ($karyawan->save()) {
+                if ($dataBantuanMasyarakat->save()) {
                     // Jika berhasil, tambahkan ke hitungan data yang berhasil
                     $successDataCount++;
                 } else {
@@ -99,13 +99,13 @@ class BantuanMasyarakatController extends Controller
     {
         // Validasi data bantuanMasyarakat
         $validateBantuanMasyarakatData = $request->validate([
-            'pelaksana' => 'required',
-            'tanggal' => 'required',
-            'lokasi' => 'required',
-            'jenis_barang' => 'required',
-            'jumlah_yang_disalurkan' => 'required',
-            'sasaran_penerima' => 'required',
-            'penanggung_jawab' => 'required',
+            'pelaksana' => 'required|string',
+            'tanggal' => 'required|date',
+            'lokasi' => 'required|string',
+            'jenis_barang' => 'required|string',
+            'jumlah_yang_disalurkan' => 'required|integer',
+            'sasaran_penerima' => 'required|string',
+            'penanggung_jawab' => 'required|string',
         ]);
 
         DB::beginTransaction();
@@ -127,13 +127,13 @@ class BantuanMasyarakatController extends Controller
     public function updateDataBantuanMasyarakat(Request $request, $id)
     {
         $validateData = $request->validate([
-            'pelaksana' => 'required',
-            'tanggal' => 'required',
-            'lokasi' => 'required',
-            'jenis_barang' => 'required',
-            'jumlah_yang_disalurkan' => 'required',
-            'sasaran_penerima' => 'required',
-            'penanggung_jawab' => 'required',
+            'pelaksana' => 'required|string',
+            'tanggal' => 'required|date',
+            'lokasi' => 'required|string',
+            'jenis_barang' => 'required|string',
+            'jumlah_yang_disalurkan' => 'required|integer',
+            'sasaran_penerima' => 'required|string',
+            'penanggung_jawab' => 'required|string',
         ]);
 
         $result = $this->bantuanMasyarakatService->updateDataBantuanMasyarakat($validateData, $id);
