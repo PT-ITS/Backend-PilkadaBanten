@@ -12,6 +12,7 @@ class bantuan_rw extends Model
     protected $fillable = [
         'jenis_bantuan',
         'tanggal',
+        'jumlah',
         'rw_id'
     ];
 }

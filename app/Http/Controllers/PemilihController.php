@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Imports\ImportPemilih;
 use App\Models\data_pemilih;
 use App\Models\Relawan;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
 
@@ -111,6 +112,40 @@ class PemilihController extends Controller
         } catch (\Exception $e) {
             // Return error response if the process fails
             return response()->json(['message' => 'An error occurred while importing data.', 'error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function updateRelawan(Request $request, $id)
+    {
+        $validateData = $request->validate([
+            'nik' => 'required',
+            'nama' => 'required',
+            'alamat' => 'required',
+            'kota' => 'required',
+            'kec' => 'required',
+            'kel' => 'required',
+            'rt_rw' => 'required',
+            'jumlah_data' => 'required|integer',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            $dataRelawan = Relawan::find($id);
+            $dataRelawan->nik = $validateData['nik'];
+            $dataRelawan->nama = $validateData['nama'];
+            $dataRelawan->alamat = $validateData['alamat'];
+            $dataRelawan->kota = $validateData['kota'];
+            $dataRelawan->kec = $validateData['kec'];
+            $dataRelawan->kel = $validateData['kel'];
+            $dataRelawan->rt_rw = $validateData['rt_rw'];
+            $dataRelawan->jumlah_data = $validateData['jumlah_data'];
+            $dataRelawan->save();
+
+            DB::commit();
+            return response()->json(['message' => 'update data bantuan pemlih success'], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => $e->getMessage()], 401);
         }
     }
 

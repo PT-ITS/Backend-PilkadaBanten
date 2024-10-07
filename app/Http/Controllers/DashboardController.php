@@ -52,9 +52,9 @@ class DashboardController extends Controller
     {
         $year = $request->input('year', date('Y'));
 
-        $data = bantuan_masyarakat::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
+        $data = bantuan_masyarakat::selectRaw('MONTH(created_at) as month, jenis_barang, COUNT(*) as count')
             ->whereYear('tanggal', $year)
-            ->groupBy('month')
+            ->groupBy('month', 'jenis_barang')
             ->orderBy('month')
             ->get();
 
@@ -66,10 +66,68 @@ class DashboardController extends Controller
         $month = $request->input('month', date('m'));
         $year = $request->input('year', date('Y'));
 
-        $data = bantuan_masyarakat::selectRaw('COUNT(*) as count')
+        $data = bantuan_masyarakat::selectRaw('jenis_barang, COUNT(*) as count')
             ->whereYear('tanggal', $year)
             ->whereMonth('tanggal', $month)
-            // ->groupBy('status_pengajuan')
+            ->groupBy('jenis_barang')
+            ->get();
+
+        return response()->json(['message' => 'success', 'data' => $data]);
+    }
+
+    public function listLineChartDataBantuanTokoh(Request $request)
+    {
+        $year = $request->input('year', date('Y'));
+
+        $data = bantuan_masyarakat::join('jenis_barangs', 'bantuan_tokohs.id', '=', 'jenis_barangs.bantuan_tokoh_id')
+            ->selectRaw('MONTH(created_at) as month, jenis_barang, COUNT(*) as count')
+            ->whereYear('tanggal', $year)
+            ->groupBy('month', 'jenis_barang')
+            ->orderBy('month')
+            ->get();
+
+        return response()->json(['message' => 'success', 'data' => $data]);
+    }
+
+    public function listPieChartDataBantuanTokoh(Request $request)
+    {
+        $month = $request->input('month', date('m'));
+        $year = $request->input('year', date('Y'));
+
+        $data = bantuan_masyarakat::join('jenis_barangs', 'bantuan_tokohs.id', '=', 'jenis_barangs.bantuan_tokoh_id')
+            ->selectRaw('jenis_barang, COUNT(*) as count')
+            ->whereYear('tanggal', $year)
+            ->whereMonth('tanggal', $month)
+            ->groupBy('jenis_barang')
+            ->get();
+
+        return response()->json(['message' => 'success', 'data' => $data]);
+    }
+
+    public function listLineChartDataDukunganTokoh(Request $request)
+    {
+        $year = $request->input('year', date('Y'));
+
+        $data = bantuan_masyarakat::join('jenis_dukungans', 'dukungan_tokohs.id', '=', 'jenis_dukungans.dukungan_tokoh_id')
+            ->selectRaw('MONTH(created_at) as month, jenis_barang, COUNT(*) as count')
+            ->whereYear('tanggal', $year)
+            ->groupBy('month', 'jenis_barang')
+            ->orderBy('month')
+            ->get();
+
+        return response()->json(['message' => 'success', 'data' => $data]);
+    }
+
+    public function listPieChartDataDukunganTokoh(Request $request)
+    {
+        $month = $request->input('month', date('m'));
+        $year = $request->input('year', date('Y'));
+
+        $data = bantuan_masyarakat::join('jenis_dukungans', 'dukungan_tokohs.id', '=', 'jenis_dukungans.dukungan_tokoh_id')
+            ->selectRaw('jenis_barang, COUNT(*) as count')
+            ->whereYear('tanggal', $year)
+            ->whereMonth('tanggal', $month)
+            ->groupBy('jenis_barang')
             ->get();
 
         return response()->json(['message' => 'success', 'data' => $data]);

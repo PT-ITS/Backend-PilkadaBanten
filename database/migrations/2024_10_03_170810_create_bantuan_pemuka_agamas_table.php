@@ -17,6 +17,7 @@ class CreateBantuanPemukaAgamasTable extends Migration
             $table->id();
             $table->string('jenis_bantuan');
             $table->date('tanggal');
+            $table->integer('jumlah');
             $table->foreignId('pemuka_agama_id')->constrained('pemuka_agamas')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });

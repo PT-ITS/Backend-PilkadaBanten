@@ -9,6 +9,7 @@ use App\Models\bantuan_tokoh;
 use App\Models\jenis_barang;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
 class BantuanTokohController extends Controller
@@ -46,9 +47,13 @@ class BantuanTokohController extends Controller
 
     public function importDataBantuanTokoh(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'file' => 'required|mimes:xlsx,xls',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Validation error', 'errors' => $validator->errors()], 422);
+        }
 
         try {
             // Simpan data yang akan diimpor

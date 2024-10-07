@@ -12,6 +12,7 @@ class bantuan_pemilih extends Model
     protected $fillable = [
         'jenis_bantuan',
         'tanggal',
+        'jumlah',
         'relawan_id'
     ];
 }

@@ -17,6 +17,7 @@ class CreateBantuanRwsTable extends Migration
             $table->id();
             $table->string('jenis_bantuan');
             $table->date('tanggal');
+            $table->integer('jumlah');
             $table->foreignId('rw_id')->constrained('data_rws')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });

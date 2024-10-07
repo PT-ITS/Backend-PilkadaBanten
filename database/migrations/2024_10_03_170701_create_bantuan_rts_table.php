@@ -17,6 +17,7 @@ class CreateBantuanRtsTable extends Migration
             $table->id();
             $table->string('jenis_bantuan');
             $table->date('tanggal');
+            $table->integer('jumlah');
             $table->foreignId('rt_id')->constrained('data_rts')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });

@@ -8,6 +8,7 @@ use App\Imports\ImportBantuanMasyarakat;
 use App\Models\bantuan_masyarakat;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
 class BantuanMasyarakatController extends Controller
@@ -45,9 +46,13 @@ class BantuanMasyarakatController extends Controller
 
     public function importDataBantuanMasyarakat(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'file' => 'required|mimes:xlsx,xls',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Validation error', 'errors' => $validator->errors()], 422);
+        }
 
         try {
             // Simpan data yang akan diimpor

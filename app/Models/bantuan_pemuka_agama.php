@@ -12,6 +12,7 @@ class bantuan_pemuka_agama extends Model
     protected $fillable = [
         'jenis_bantuan',
         'tanggal',
+        'jumlah',
         'pemuka_agama_id'
     ];
 }
