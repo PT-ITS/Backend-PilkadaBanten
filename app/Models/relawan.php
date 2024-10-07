@@ -19,4 +19,10 @@ class relawan extends Model
         "rt_rw",
         "jumlah_data"
     ];
+
+    // Relasi hasMany ke data_pemilih
+    public function data_pemilih()
+    {
+        return $this->hasMany(data_pemilih::class, 'relawan_id');
+    }
 }

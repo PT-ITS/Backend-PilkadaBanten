@@ -20,10 +20,35 @@ class PemilihController extends Controller
 
     public function listPemilihByRelawan($id)
     {
-        $dataPemilih = data_pemilih::where('relawan_id', $id)->get();
-
-        return response()->json(['id' => '1', 'data' => $dataPemilih]);
+        // Ambil data relawan berdasarkan id
+        $relawan = Relawan::find($id);
+    
+        // Cek apakah data relawan ditemukan
+        if ($relawan) {
+            // Ambil data pemilih yang terkait dengan relawan ini
+            $dataPemilih = $relawan->data_pemilih()->get(); // Menggunakan relasi hasMany
+            
+            // Gabungkan data relawan dan data pemilih dalam array 'data'
+            return response()->json([
+                'id' => $id,
+                'data' => [
+                    'relawan' => [
+                        'nik' => $relawan->nik,
+                        'nama' => $relawan->nama,
+                        'alamat' => $relawan->alamat,
+                        'kota' => $relawan->kota,
+                        'kec' => $relawan->kec,
+                        'kel' => $relawan->kel,
+                        'rt_rw' => $relawan->rt_rw
+                    ],
+                    'data_pemilih' => $dataPemilih // Daftar data pemilih
+                ]
+            ]);
+        } else {
+            return response()->json(['message' => 'Relawan tidak ditemukan'], 404);
+        }
     }
+    
 
     public function importDataPemilih(Request $request)
     {
@@ -113,6 +138,77 @@ class PemilihController extends Controller
             return response()->json(['message' => 'An error occurred while importing data.', 'error' => $e->getMessage()], 500);
         }
     }
+
+    public function importPemilihByRelawan(Request $request)
+    {
+        // Validate the incoming request, including the Excel file and relawan data
+        $validator = Validator::make($request->all(), [
+            'id_relawan' => 'required',
+            'file' => 'required|mimes:xlsx,xls',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Validation error', 'errors' => $validator->errors()], 422);
+        }
+
+        try {
+            // Import Pemilih data from Excel file
+            $importedDataPemilih = Excel::toArray(new ImportPemilih, $request->file('file'))[0];
+
+            // Initialize counters for success and failure tracking
+            $successDataCount = 0;
+            $failDataCount = 0;
+            $failedRows = [];
+            $errors = [];
+
+            // Loop through the imported data
+            foreach ($importedDataPemilih as $index => $data) {
+                try {
+                    // Check if NIK already exists in the data_pemilih table
+                    $existingPemilih = data_pemilih::where('nik', $data['nik'])->first();
+
+                    if (!$existingPemilih) {
+                        // If not existing, create a new pemilih entry
+                        $pemilihData = new data_pemilih([
+                            'nik' => $data['nik'],
+                            'nama' => $data['nama'],
+                            'alamat' => $data['alamat'],
+                            'kota' => $data['kota'],
+                            'kec' => $data['kec'],
+                            'desa_kel' => $data['desa_kel'],
+                            'rt_rw' => $data['rt_rw'],
+                            'tps' => $data['tps'],
+                            'relawan_id' => $request->id_relawan
+                        ]);
+                        $pemilihData->save();
+                        $successDataCount++; // Increment success count
+                    } else {
+                        $errors[] = "NIK already exists for row " . ($index + 1);
+                        $failDataCount++; // Increment fail count
+                        $failedRows[] = $index + 1;
+                    }
+                } catch (\Exception $e) {
+                    // Handle any exception during the data import process
+                    $failDataCount++; // Increment fail count
+                    $failedRows[] = $index + 1;
+                    $errors[] = "Error on row " . ($index + 1) . ": " . $e->getMessage();
+                }
+            }
+
+            // Return success response with summary of import
+            return response()->json([
+                'message' => 'Data imported successfully.',
+                'success_data_count' => $successDataCount,
+                'fail_data_count' => $failDataCount,
+                'failed_rows' => $failedRows,
+                'errors' => $errors,
+            ]);
+        } catch (\Exception $e) {
+            // Return error response if the process fails
+            return response()->json(['message' => 'An error occurred while importing data.', 'error' => $e->getMessage()], 500);
+        }
+    }
+
 
     public function deleteRelawan($id)
     {

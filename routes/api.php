@@ -38,6 +38,7 @@ Route::group([
     Route::get('list-by-relawan/{id}', [PemilihController::class, 'listPemilihByRelawan']);
     Route::get('list-relawan', [PemilihController::class, 'listRelawan']);
     Route::post('import', [PemilihController::class, 'importDataPemilih']);
+    Route::post('import-by-relawan', [PemilihController::class, 'importPemilihByRelawan']);
     Route::delete('delete-relawan/{id}', [PemilihController::class, 'deleteRelawan']);
     // });
 });
