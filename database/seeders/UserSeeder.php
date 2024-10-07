@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\bantuan_relawan;
+use App\Models\data_pemilih;
 use App\Models\data_rt;
 use App\Models\data_rw;
 use App\Models\pemuka_agama;
@@ -39,7 +40,7 @@ class UserSeeder extends Seeder
             'rt_rw' => 'RT 09/RW 09',
             'jumlah_data' => '1000',
         ]);
-        relawan::create([
+        data_pemilih::create([
             'nik' => '3600000000000002',
             'nama' => 'Mang Yayan',
             'alamat' => 'Jl. Raya Ciboleger',
@@ -50,7 +51,7 @@ class UserSeeder extends Seeder
             'tps' => 'TPS 01',
             'relawan_id' => '1',
         ]);
-        relawan::create([
+        data_pemilih::create([
             'nik' => '3600000000000003',
             'nama' => 'Mang Ucup',
             'alamat' => 'Jl. Raya Ciboleger',
@@ -61,7 +62,7 @@ class UserSeeder extends Seeder
             'tps' => 'TPS 01',
             'relawan_id' => '1',
         ]);
-        relawan::create([
+        data_pemilih::create([
             'nik' => '3600000000000004',
             'nama' => 'Mang Asep',
             'alamat' => 'Jl. Raya Ciboleger',
@@ -96,8 +97,6 @@ class UserSeeder extends Seeder
             'kota' => 'Kabupaten Lebak',
             'kec' => 'Kec. Leuwidamar',
             'kel' => 'Cisimeut',
-            'rw' => 'RW 09',
-            'rt' => 'RT 09',
             'support' => '1',
             'relawan_id' => '1',
         ]);
