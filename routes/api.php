@@ -4,6 +4,7 @@ use App\Http\Controllers\FnbController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PemilihController;
 use App\Http\Controllers\BantuanMasyarakatController;
 use App\Http\Controllers\BantuanTokohController;
 use App\Http\Controllers\DukunganTokohController;
@@ -25,6 +26,20 @@ Route::group([
 
         });
     });
+});
+
+// Pemilih
+Route::group([
+    'prefix' => 'pemilih'
+], function () {
+    // Route::group([
+    //     'middleware' => 'auth:api'
+    // ], function () {
+    Route::get('list-by-relawan/{id}', [PemilihController::class, 'listPemilihByRelawan']);
+    Route::get('list-relawan', [PemilihController::class, 'listRelawan']);
+    Route::post('import', [PemilihController::class, 'importDataPemilih']);
+    Route::delete('delete-relawan/{id}', [PemilihController::class, 'deleteRelawan']);
+    // });
 });
 
 // Bantuan Masyarakat
