@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Validator;
 
 class RwController extends Controller
 {
-    public function listRw()
+    public function listRw($id)
     {
-        $dataRw = data_rw::get();
+        $dataRw = data_rw::where('relawan_id', $id)->get();
 
         return response()->json(['message' => 'get data rw success', 'data' => $dataRw], 200);
     }
@@ -22,6 +22,7 @@ class RwController extends Controller
     {
         // Validate the incoming request, including the Excel file and relawan data
         $validator = Validator::make($request->all(), [
+            'relawan_id' => 'required',
             'file' => 'required|mimes:xlsx,xls',
         ]);
 
@@ -47,6 +48,7 @@ class RwController extends Controller
                     'kel' => $data['kel'],
                     'rw' => $data['rw'],
                     'support' => $data['support'],
+                    'relawan_id' => $request->relawan_id,
                 ]);
                 // Coba simpan data ke database
                 if ($dataRw->save()) {

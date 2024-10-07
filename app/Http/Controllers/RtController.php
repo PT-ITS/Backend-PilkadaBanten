@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Validator;
 
 class RtController extends Controller
 {
-    public function listRt()
+    public function listRt($id)
     {
-        $dataRt = data_rt::get();
+        $dataRt = data_rt::where('relawan_id', $id)->get();
 
         return response()->json(['message' => 'get data rt success', 'data' => $dataRt], 200);
     }
@@ -22,6 +22,7 @@ class RtController extends Controller
     {
         // Validate the incoming request, including the Excel file and relawan data
         $validator = Validator::make($request->all(), [
+            'relawan_id' => 'required',
             'file' => 'required|mimes:xlsx,xls',
         ]);
 
@@ -48,6 +49,7 @@ class RtController extends Controller
                     'rw' => $data['rw'],
                     'rt' => $data['rt'],
                     'support' => $data['support'],
+                    'relawan_id' => $request->relawan_id,
                 ]);
                 // Coba simpan data ke database
                 if ($dataRt->save()) {

@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Validator;
 
 class PemukaAgamaController extends Controller
 {
-    public function listPemukaAgama()
+    public function listPemukaAgama($id)
     {
-        $dataPemukaAgama = pemuka_agama::get();
+        $dataPemukaAgama = pemuka_agama::where('relawan_id', $id)->get();
 
         return response()->json(['message' => 'get data pemuka agama success', 'data' => $dataPemukaAgama], 200);
     }
@@ -22,6 +22,7 @@ class PemukaAgamaController extends Controller
     {
         // Validate the incoming request, including the Excel file and relawan data
         $validator = Validator::make($request->all(), [
+            'relawan_id' => 'required',
             'file' => 'required|mimes:xlsx,xls',
         ]);
 
@@ -49,6 +50,7 @@ class PemukaAgamaController extends Controller
                     'kec' => $data['kec'],
                     'kel' => $data['kel'],
                     'support' => $data['support'],
+                    'relawan_id' => $request->relawan_id,
                 ]);
                 // Coba simpan data ke database
                 if ($dataPemukaAgama->save()) {

@@ -22,6 +22,7 @@ class CreatePemukaAgamasTable extends Migration
             $table->string('kec');
             $table->string('kel');
             $table->enum('support', ['0', '1'])->default('0');
+            $table->foreignId('relawan_id')->constrained('relawans')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

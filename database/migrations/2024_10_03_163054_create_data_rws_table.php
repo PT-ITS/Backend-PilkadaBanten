@@ -20,6 +20,7 @@ class CreateDataRwsTable extends Migration
             $table->string('kel');
             $table->string('rw');
             $table->enum('support', ['0', '1'])->default('0');
+            $table->foreignId('relawan_id')->constrained('relawans')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

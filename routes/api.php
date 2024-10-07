@@ -10,6 +10,7 @@ use App\Http\Controllers\BantuanPemilihController;
 use App\Http\Controllers\BantuanRtController;
 use App\Http\Controllers\BantuanRwController;
 use App\Http\Controllers\BantuanPemukaAgamaController;
+use App\Http\Controllers\BantuanRelawanController;
 use App\Http\Controllers\BantuanTokohController;
 use App\Http\Controllers\DukunganTokohController;
 use App\Http\Controllers\RtController;
@@ -50,19 +51,33 @@ Route::group([
     // });
 });
 
-// Bantuan Pemilih
+// Bantuan Relawan
 Route::group([
-    'prefix' => 'bantuan-pemilih'
+    'prefix' => 'bantuan-relawan'
 ], function () {
     // Route::group([
     //     'middleware' => 'auth:api'
     // ], function () {
-    Route::get('list/{id}', [BantuanPemilihController::class, 'listBantuanPemilihByRelawan']);
-    Route::post('import', [BantuanPemilihController::class, 'importBantuanPemilihByRelawan']);
-    Route::post('update/{id}', [BantuanPemilihController::class, 'updateBantuanPemilih']);
-    Route::delete('delete/{id}', [BantuanPemilihController::class, 'deleteBantuanPemilih']);
+    Route::get('list/{id}', [BantuanRelawanController::class, 'listBantuanRelawanByRelawan']);
+    Route::post('import', [BantuanRelawanController::class, 'importBantuanRelawanByRelawan']);
+    Route::post('update/{id}', [BantuanRelawanController::class, 'updateBantuanRelawan']);
+    Route::delete('delete/{id}', [BantuanRelawanController::class, 'deleteBantuanRelawan']);
     // });
 });
+
+// Bantuan Pemilih
+// Route::group([
+//     'prefix' => 'bantuan-pemilih'
+// ], function () {
+//     // Route::group([
+//     //     'middleware' => 'auth:api'
+//     // ], function () {
+//     Route::get('list/{id}', [BantuanPemilihController::class, 'listBantuanPemilihByRelawan']);
+//     Route::post('import', [BantuanPemilihController::class, 'importBantuanPemilihByRelawan']);
+//     Route::post('update/{id}', [BantuanPemilihController::class, 'updateBantuanPemilih']);
+//     Route::delete('delete/{id}', [BantuanPemilihController::class, 'deleteBantuanPemilih']);
+//     // });
+// });
 
 // Rt
 Route::group([
@@ -79,18 +94,18 @@ Route::group([
 });
 
 // Bantuan Rt
-Route::group([
-    'prefix' => 'bantuan-rt'
-], function () {
-    // Route::group([
-    //     'middleware' => 'auth:api'
-    // ], function () {
-    Route::get('list/{id}', [BantuanRtController::class, 'listBantuanRtByRt']);
-    Route::post('import', [BantuanRtController::class, 'importBantuanRtByRt']);
-    Route::post('update/{id}', [BantuanRtController::class, 'updateBantuanRt']);
-    Route::delete('delete/{id}', [BantuanRtController::class, 'deleteBantuanRt']);
-    // });
-});
+// Route::group([
+//     'prefix' => 'bantuan-rt'
+// ], function () {
+//     // Route::group([
+//     //     'middleware' => 'auth:api'
+//     // ], function () {
+//     Route::get('list/{id}', [BantuanRtController::class, 'listBantuanRtByRt']);
+//     Route::post('import', [BantuanRtController::class, 'importBantuanRtByRt']);
+//     Route::post('update/{id}', [BantuanRtController::class, 'updateBantuanRt']);
+//     Route::delete('delete/{id}', [BantuanRtController::class, 'deleteBantuanRt']);
+//     // });
+// });
 
 // Rw
 Route::group([
@@ -107,18 +122,18 @@ Route::group([
 });
 
 // Bantuan Rw
-Route::group([
-    'prefix' => 'bantuan-rw'
-], function () {
-    // Route::group([
-    //     'middleware' => 'auth:api'
-    // ], function () {
-    Route::get('list/{id}', [BantuanRwController::class, 'listBantuanRwByRw']);
-    Route::post('import', [BantuanRwController::class, 'importBantuanRwByRw']);
-    Route::post('update/{id}', [BantuanRwController::class, 'updateBantuanRw']);
-    Route::delete('delete/{id}', [BantuanRwController::class, 'deleteBantuanRw']);
-    // });
-});
+// Route::group([
+//     'prefix' => 'bantuan-rw'
+// ], function () {
+//     // Route::group([
+//     //     'middleware' => 'auth:api'
+//     // ], function () {
+//     Route::get('list/{id}', [BantuanRwController::class, 'listBantuanRwByRw']);
+//     Route::post('import', [BantuanRwController::class, 'importBantuanRwByRw']);
+//     Route::post('update/{id}', [BantuanRwController::class, 'updateBantuanRw']);
+//     Route::delete('delete/{id}', [BantuanRwController::class, 'deleteBantuanRw']);
+//     // });
+// });
 
 // Pemuka Agama
 Route::group([
@@ -134,19 +149,19 @@ Route::group([
     // });
 });
 
-// Bantuan PemukaAgama
-Route::group([
-    'prefix' => 'bantuan-pemuka-agama'
-], function () {
-    // Route::group([
-    //     'middleware' => 'auth:api'
-    // ], function () {
-    Route::get('list/{id}', [BantuanPemukaAgamaController::class, 'listBantuanPemukaAgamaByPemukaAgama']);
-    Route::post('import', [BantuanPemukaAgamaController::class, 'importBantuanPemukaAgamaByPemukaAgama']);
-    Route::post('update/{id}', [BantuanPemukaAgamaController::class, 'updateBantuanPemukaAgama']);
-    Route::delete('delete/{id}', [BantuanPemukaAgamaController::class, 'deleteBantuanPemukaAgama']);
-    // });
-});
+// Bantuan Pemuka Agama
+// Route::group([
+//     'prefix' => 'bantuan-pemuka-agama'
+// ], function () {
+//     // Route::group([
+//     //     'middleware' => 'auth:api'
+//     // ], function () {
+//     Route::get('list/{id}', [BantuanPemukaAgamaController::class, 'listBantuanPemukaAgamaByPemukaAgama']);
+//     Route::post('import', [BantuanPemukaAgamaController::class, 'importBantuanPemukaAgamaByPemukaAgama']);
+//     Route::post('update/{id}', [BantuanPemukaAgamaController::class, 'updateBantuanPemukaAgama']);
+//     Route::delete('delete/{id}', [BantuanPemukaAgamaController::class, 'deleteBantuanPemukaAgama']);
+//     // });
+// });
 
 // Bantuan Masyarakat
 Route::group([

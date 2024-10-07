@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDataRtsTable extends Migration
+class CreateBantuanRelawansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateDataRtsTable extends Migration
      */
     public function up()
     {
-        Schema::create('data_rts', function (Blueprint $table) {
+        Schema::create('bantuan_relawans', function (Blueprint $table) {
             $table->id();
-            $table->string('kota');
-            $table->string('kec');
-            $table->string('kel');
-            $table->string('rw');
-            $table->string('rt');
-            $table->enum('support', ['0', '1'])->default('0');
+            $table->string('jenis_bantuan');
+            $table->date('tanggal');
+            $table->string('sasaran');
+            $table->bigInteger('harga_satuan');
+            $table->integer('jumlah_penerima');
+            $table->integer('jumlah_bantuan');
             $table->foreignId('relawan_id')->constrained('relawans')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
@@ -33,6 +33,6 @@ class CreateDataRtsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('data_rts');
+        Schema::dropIfExists('bantuan_relawans');
     }
 }
