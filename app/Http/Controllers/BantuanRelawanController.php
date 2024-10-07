@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Imports\ImportBantuanRelawan;
 use App\Models\bantuan_relawan;
+use App\Models\relawan;
+use App\Models\data_pemilih;
+use App\Models\data_rt;
+use App\Models\data_rw;
+use App\Models\pemuka_agama;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
@@ -12,6 +17,54 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class BantuanRelawanController extends Controller
 {
+    public function infoBantuanByRelawan($id)
+    {
+        $jumlahPenerimaBantuanPemilih = data_pemilih::where('relawan_id', $id)->count();
+        $jumlahPenerimaBantuanRt = data_rt::where('relawan_id', $id)->count();
+        $jumlahPenerimaBantuanRw = data_rw::where('relawan_id', $id)->count();
+        $jumlahPenerimaBantuanPemukaAgama = pemuka_agama::where('relawan_id', $id)->count();
+
+
+        return response()->json([
+            'id' => '1',
+            'data' => [
+                'jumlahWargaPenerimaBantuan' => $jumlahPenerimaBantuanPemilih,
+                'jumlahRtPenerimaBantuan' => $jumlahPenerimaBantuanRt,
+                'jumlahRwPenerimaBantuan' => $jumlahPenerimaBantuanRw,
+                'jumlahPemukaAgamaPenerimaBantuan' => $jumlahPenerimaBantuanPemukaAgama,
+            ]
+            ]);
+    }
+
+    public function createBantuanByRelawan(Request $request)
+    {
+        try {
+            $dataValidate = $request->validate([
+                'jenis_bantuan' => 'required',
+                'tanggal' => 'required',
+                'sasaran' => 'required',
+                'harga_satuan' => 'required',
+                'jumlah_penerima' => 'required',
+                'jumlah_bantuan' => 'required',
+                'relawan_id' => 'required',
+            ]);
+    
+            $bantuanRelawan = new bantuan_relawan();
+            $bantuanRelawan->jenis_bantuan = $dataValidate['jenis_bantuan'];
+            $bantuanRelawan->tanggal = $dataValidate['tanggal'];
+            $bantuanRelawan->sasaran = $dataValidate['sasaran'];
+            $bantuanRelawan->harga_satuan = $dataValidate['harga_satuan'];
+            $bantuanRelawan->jumlah_penerima = $dataValidate['jumlah_penerima'];
+            $bantuanRelawan->jumlah_bantuan = $dataValidate['jumlah_bantuan'];
+            $bantuanRelawan->relawan_id = $dataValidate['relawan_id'];
+            $bantuanRelawan->save();
+            
+            return response()->json(['id' => '1', 'data' => 'data bantuan berhasil disimpan']);
+        } catch (\Throwable $th) {
+            return response()->json(['id' => '0', 'data' => 'data bantuan gagal disimpan', 'message' => $th->getMessage()]);
+        }
+    }
+
     public function listBantuanRelawanByRelawan($id)
     {
         $dataBantuanRelawan = bantuan_relawan::where('relawan_id', $id)->get();

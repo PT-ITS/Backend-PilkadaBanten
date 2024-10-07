@@ -15,5 +15,6 @@ class data_rw extends Model
         'kel',
         'rw',
         'support',
+        'relawan_id'
     ];
 }

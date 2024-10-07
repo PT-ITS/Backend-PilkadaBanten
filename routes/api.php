@@ -58,8 +58,10 @@ Route::group([
     // Route::group([
     //     'middleware' => 'auth:api'
     // ], function () {
+    Route::get('info/{id}', [BantuanRelawanController::class, 'infoBantuanByRelawan']);
     Route::get('list/{id}', [BantuanRelawanController::class, 'listBantuanRelawanByRelawan']);
     Route::post('import', [BantuanRelawanController::class, 'importBantuanRelawanByRelawan']);
+    Route::post('input', [BantuanRelawanController::class, 'createBantuanByRelawan']);
     Route::post('update/{id}', [BantuanRelawanController::class, 'updateBantuanRelawan']);
     Route::delete('delete/{id}', [BantuanRelawanController::class, 'deleteBantuanRelawan']);
     // });

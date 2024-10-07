@@ -17,5 +17,6 @@ class pemuka_agama extends Model
         'kec',
         'kel',
         'support',
+        'relawan_id'
     ];
 }
