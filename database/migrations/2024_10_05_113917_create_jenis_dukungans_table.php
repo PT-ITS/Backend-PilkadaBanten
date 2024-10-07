@@ -16,7 +16,7 @@ class CreateJenisDukungansTable extends Migration
         Schema::create('jenis_dukungans', function (Blueprint $table) {
             $table->id();
             $table->string('jenis_dukungan');
-            $table->string('jumlah');
+            $table->integer('jumlah');
             $table->foreignId('dukungan_tokoh_id')->constrained('dukungan_tokohs')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });

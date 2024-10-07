@@ -16,7 +16,7 @@ class CreateJenisBarangsTable extends Migration
         Schema::create('jenis_barangs', function (Blueprint $table) {
             $table->id();
             $table->string('jenis_barang');
-            $table->string('jumlah');
+            $table->integer('jumlah');
             $table->foreignId('bantuan_tokoh_id')->constrained('bantuan_tokohs')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });

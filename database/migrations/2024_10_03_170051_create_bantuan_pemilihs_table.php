@@ -17,6 +17,7 @@ class CreateBantuanPemilihsTable extends Migration
             $table->id();
             $table->string('jenis_bantuan');
             $table->date('tanggal');
+            $table->integer('jumlah');
             $table->foreignId('relawan_id')->constrained('relawans')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
