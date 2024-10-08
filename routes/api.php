@@ -88,7 +88,7 @@ Route::group([
     // Route::group([
     //     'middleware' => 'auth:api'
     // ], function () {
-    Route::get('list', [RtController::class, 'listRt']);
+    Route::get('list/{id}', [RtController::class, 'listRt']);
     Route::post('import', [RtController::class, 'importRt']);
     Route::post('update/{id}', [RtController::class, 'updateRt']);
     Route::delete('delete/{id}', [RtController::class, 'deleteRt']);
@@ -116,7 +116,7 @@ Route::group([
     // Route::group([
     //     'middleware' => 'auth:api'
     // ], function () {
-    Route::get('list', [RwController::class, 'listRw']);
+    Route::get('list/{id}', [RwController::class, 'listRw']);
     Route::post('import', [RwController::class, 'importRw']);
     Route::post('update/{id}', [RwController::class, 'updateRw']);
     Route::delete('delete/{id}', [RwController::class, 'deleteRw']);
@@ -144,7 +144,7 @@ Route::group([
     // Route::group([
     //     'middleware' => 'auth:api'
     // ], function () {
-    Route::get('list', [PemukaAgamaController::class, 'listPemukaAgama']);
+    Route::get('list/{id}', [PemukaAgamaController::class, 'listPemukaAgama']);
     Route::post('import', [PemukaAgamaController::class, 'importPemukaAgama']);
     Route::post('update/{id}', [PemukaAgamaController::class, 'updatePemukaAgama']);
     Route::delete('delete/{id}', [PemukaAgamaController::class, 'deletePemukaAgama']);

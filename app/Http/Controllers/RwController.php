@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Imports\ImportRw;
 use App\Models\data_rw;
+use App\Models\Relawan;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
@@ -13,9 +14,23 @@ class RwController extends Controller
 {
     public function listRw($id)
     {
+        $relawan = Relawan::find($id);
         $dataRw = data_rw::where('relawan_id', $id)->get();
 
-        return response()->json(['message' => 'get data rw success', 'data' => $dataRw], 200);
+        return response()->json(['message' => 'get data rt success', 
+        'data' => [
+            'relawan' => [
+                        'nik' => $relawan->nik,
+                        'nama' => $relawan->nama,
+                        'alamat' => $relawan->alamat,
+                        'kota' => $relawan->kota,
+                        'kec' => $relawan->kec,
+                        'kel' => $relawan->kel,
+                        'rt_rw' => $relawan->rt_rw
+                    ],
+            'data_rw' => $dataRw
+        ]
+    ], 200);
     }
 
     public function importRw(Request $request)
