@@ -17,6 +17,92 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class BantuanRelawanController extends Controller
 {
+    public function infoJumlahSasaranBantuan()
+    {
+        // Ambil semua data relawan
+        $dataRelawan = relawan::get();
+    
+        // Inisialisasi array untuk menyimpan hasil
+        $result = [];
+    
+        // Looping data relawan untuk menghitung jumlah bantuan terkait
+        foreach ($dataRelawan as $relawan) {
+            $id = $relawan->id; // Ambil id relawan
+            // Hstikeritung jumlah bantuan berdasarkan kategori sasaran
+            $uangBatuan = bantuan_relawan::where('relawan_id', $id)->where('jenis_bantuan', 'uang')->count();
+            $kaosBantuan = bantuan_relawan::where('relawan_id', $id)->where('jenis_bantuan', 'kaos')->count();
+            $stikerBantuan = bantuan_relawan::where('relawan_id', $id)->where('jenis_bantuan', 'stiker')->count();
+            $berasBantuan = bantuan_relawan::where('relawan_id', $id)->where('jenis_bantuan', 'beras')->count();
+            $spandukBantuan = bantuan_relawan::where('relawan_id', $id)->where('jenis_bantuan', 'spanduk')->count();
+            $kerudungBantuan = bantuan_relawan::where('relawan_id', $id)->where('jenis_bantuan', 'kerudung')->count();
+           
+            // Masukkan data relawan dan jumlah bantuan ke dalam array hasil
+            $result[] = [
+                'id' => $id,
+                'nama' => $relawan->nama,
+                'alamat' => $relawan->alamat,
+                'kota' => $relawan->kota,
+                'kec' => $relawan->kec,
+                'kel' => $relawan->kel,
+                'bantuan_uang' => $uangBatuan,
+                'bantuan_kaos' => $kaosBatuan,
+                'bantuan_stiker' => $stikerBatuan,
+                'bantuan_beras' => $berasBatuan,
+                'bantuan_spanduk' => $spandukBatuan,
+                'bantuan_kerudung' => $kerudungBatuan,
+            ];
+        }
+    
+        // Kembalikan hasil sebagai response JSON
+        return response()->json([
+            'status' => 'success',
+            'data' => $result,
+        ]);
+    }
+
+    public function infoJumlahJenisBantuan()
+    {
+        // Ambil semua data relawan
+        $dataRelawan = relawan::get();
+    
+        // Inisialisasi array untuk menyimpan hasil
+        $result = [];
+    
+        // Looping data relawan untuk menghitung jumlah bantuan terkait
+        foreach ($dataRelawan as $relawan) {
+            $id = $relawan->id; // Ambil id relawan
+    
+            // Hitung jumlah bantuan berdasarkan kategori sasaran
+            $jumlahSemuaBantuan = bantuan_relawan::where('relawan_id', $id)->count();
+            $jumlahBantuanWarga = bantuan_relawan::where('relawan_id', $id)->where('sasaran', 'warga')->count();
+            $jumlahBantuanRw = bantuan_relawan::where('relawan_id', $id)->where('sasaran', 'ketua rw')->count();
+            $jumlahBantuanRt = bantuan_relawan::where('relawan_id', $id)->where('sasaran', 'ketua rt')->count();
+            $jumlahBantuanPemukaAgama = bantuan_relawan::where('relawan_id', $id)->where('sasaran', 'pemuka agama')->count();
+    
+            // Masukkan data relawan dan jumlah bantuan ke dalam array hasil
+            $result[] = [
+                'id' => $id,
+                'nama' => $relawan->nama,
+                'alamat' => $relawan->alamat,
+                'kota' => $relawan->kota,
+                'kec' => $relawan->kec,
+                'kel' => $relawan->kel,
+                'jumlah_semua_bantuan' => $jumlahSemuaBantuan,
+                'jumlah_bantuan_warga' => $jumlahBantuanWarga,
+                'jumlah_bantuan_rw' => $jumlahBantuanRw,
+                'jumlah_bantuan_rt' => $jumlahBantuanRt,
+                'jumlah_bantuan_pemuka_agama' => $jumlahBantuanPemukaAgama,
+            ];
+        }
+    
+        // Kembalikan hasil sebagai response JSON
+        return response()->json([
+            'status' => 'success',
+            'data' => $result,
+        ]);
+    }
+    
+
     public function infoBantuanByRelawan($id)
     {
         $jumlahPenerimaBantuanPemilih = data_pemilih::where('relawan_id', $id)->count();
