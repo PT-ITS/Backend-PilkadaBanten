@@ -101,9 +101,9 @@ class UserSeeder extends Seeder
             'relawan_id' => '1',
         ]);
         bantuan_relawan::create([
-            'jenis_bantuan' => 'Beras',
+            'jenis_bantuan' => 'beras',
             'tanggal' => '2024-10-05',
-            'sasaran' => 'Masyarakat RT 09/RW 09 Cisimeut',
+            'sasaran' => 'warga',
             'harga_satuan' => '45000',
             'jumlah_penerima' => '1000',
             'jumlah_bantuan' => '45000000',

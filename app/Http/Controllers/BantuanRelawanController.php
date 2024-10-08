@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\BantuanRelawanExport;
 use Illuminate\Http\Request;
 use App\Imports\ImportBantuanRelawan;
 use App\Models\bantuan_relawan;
-use App\Models\relawan;
 use App\Models\data_pemilih;
 use App\Models\data_rt;
 use App\Models\data_rw;
 use App\Models\pemuka_agama;
+use App\Models\relawan;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
@@ -17,6 +18,15 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class BantuanRelawanController extends Controller
 {
+    public function exportBantuanRelawan()
+    {
+        // Fetch relawan data with related bantuan_relawans
+        $relawans = Relawan::with('bantuanRelawans')->get();
+
+        return Excel::download(new BantuanRelawanExport($relawans), 'data_bantuan_relawan_export.xlsx');
+    }
+
+
     public function infoBantuanByRelawan($id)
     {
         $jumlahPenerimaBantuanPemilih = data_pemilih::where('relawan_id', $id)->count();
@@ -33,7 +43,7 @@ class BantuanRelawanController extends Controller
                 'jumlahRwPenerimaBantuan' => $jumlahPenerimaBantuanRw,
                 'jumlahPemukaAgamaPenerimaBantuan' => $jumlahPenerimaBantuanPemukaAgama,
             ]
-            ]);
+        ]);
     }
 
     public function createBantuanByRelawan(Request $request)
@@ -48,7 +58,7 @@ class BantuanRelawanController extends Controller
                 'jumlah_bantuan' => 'required',
                 'relawan_id' => 'required',
             ]);
-    
+
             $bantuanRelawan = new bantuan_relawan();
             $bantuanRelawan->jenis_bantuan = $dataValidate['jenis_bantuan'];
             $bantuanRelawan->tanggal = $dataValidate['tanggal'];
@@ -58,7 +68,7 @@ class BantuanRelawanController extends Controller
             $bantuanRelawan->jumlah_bantuan = $dataValidate['jumlah_bantuan'];
             $bantuanRelawan->relawan_id = $dataValidate['relawan_id'];
             $bantuanRelawan->save();
-            
+
             return response()->json(['id' => '1', 'data' => 'data bantuan berhasil disimpan']);
         } catch (\Throwable $th) {
             return response()->json(['id' => '0', 'data' => 'data bantuan gagal disimpan', 'message' => $th->getMessage()]);

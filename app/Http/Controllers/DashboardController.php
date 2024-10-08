@@ -62,13 +62,26 @@ class DashboardController extends Controller
         return response()->json(['message' => 'success', 'data' => $years]);
     }
 
-    public function listLineChartDataBantuanRelawan(Request $request)
+    public function listLineChartDataBantuanRelawanBySasaran(Request $request)
     {
         $year = $request->input('year', date('Y'));
 
-        $data = bantuan_masyarakat::selectRaw('MONTH(created_at) as month, sasaran, COUNT(*) as count')
+        $data = bantuan_relawan::selectRaw('MONTH(created_at) as month, sasaran, COUNT(*) as count')
             ->whereYear('tanggal', $year)
             ->groupBy('month', 'sasaran')
+            ->orderBy('month')
+            ->get();
+
+        return response()->json(['message' => 'success', 'data' => $data]);
+    }
+
+    public function listLineChartDataBantuanRelawanByJenisBantuan(Request $request)
+    {
+        $year = $request->input('year', date('Y'));
+
+        $data = bantuan_relawan::selectRaw('MONTH(created_at) as month, jenis_bantuan, COUNT(*) as count')
+            ->whereYear('tanggal', $year)
+            ->groupBy('month', 'jenis_bantuan')
             ->orderBy('month')
             ->get();
 
@@ -88,15 +101,29 @@ class DashboardController extends Controller
         return response()->json(['message' => 'success', 'data' => $data]);
     }
 
-    public function listPieChartDataBantuanRelawan(Request $request)
+    public function listPieChartDataBantuanRelawanBySasaran(Request $request)
     {
         $month = $request->input('month', date('m'));
         $year = $request->input('year', date('Y'));
 
-        $data = bantuan_masyarakat::selectRaw('sasaran, COUNT(*) as count')
+        $data = bantuan_relawan::selectRaw('sasaran, COUNT(*) as count')
             ->whereYear('tanggal', $year)
             ->whereMonth('tanggal', $month)
             ->groupBy('sasaran')
+            ->get();
+
+        return response()->json(['message' => 'success', 'data' => $data]);
+    }
+
+    public function listPieChartDataBantuanRelawanByJenisBantuan(Request $request)
+    {
+        $month = $request->input('month', date('m'));
+        $year = $request->input('year', date('Y'));
+
+        $data = bantuan_relawan::selectRaw('jenis_bantuan, COUNT(*) as count')
+            ->whereYear('tanggal', $year)
+            ->whereMonth('tanggal', $month)
+            ->groupBy('jenis_bantuan')
             ->get();
 
         return response()->json(['message' => 'success', 'data' => $data]);

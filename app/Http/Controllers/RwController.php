@@ -17,20 +17,21 @@ class RwController extends Controller
         $relawan = Relawan::find($id);
         $dataRw = data_rw::where('relawan_id', $id)->get();
 
-        return response()->json(['message' => 'get data rt success', 
-        'data' => [
-            'relawan' => [
-                        'nik' => $relawan->nik,
-                        'nama' => $relawan->nama,
-                        'alamat' => $relawan->alamat,
-                        'kota' => $relawan->kota,
-                        'kec' => $relawan->kec,
-                        'kel' => $relawan->kel,
-                        'rt_rw' => $relawan->rt_rw
-                    ],
-            'data_rw' => $dataRw
-        ]
-    ], 200);
+        return response()->json([
+            'message' => 'get data rt success',
+            'data' => [
+                'relawan' => [
+                    'nik' => $relawan->nik,
+                    'nama' => $relawan->nama,
+                    'alamat' => $relawan->alamat,
+                    'kota' => $relawan->kota,
+                    'kec' => $relawan->kec,
+                    'kel' => $relawan->kel,
+                    'rt_rw' => $relawan->rt_rw
+                ],
+                'data_rw' => $dataRw
+            ]
+        ], 200);
     }
 
     public function importRw(Request $request)
@@ -57,21 +58,31 @@ class RwController extends Controller
 
             // Loop through the imported data
             foreach ($importedDataRw as $index => $data) {
-                $dataRw = new data_rw([
-                    'kota' => $data['kota'],
-                    'kec' => $data['kec'],
-                    'kel' => $data['kel'],
-                    'rw' => $data['rw'],
-                    'support' => $data['support'],
-                    'relawan_id' => $request->relawan_id,
-                ]);
-                // Coba simpan data ke database
-                if ($dataRw->save()) {
-                    // Jika berhasil, tambahkan ke hitungan data yang berhasil
-                    $successDataCount++;
-                } else {
-                    // Jika gagal disimpan ke database, tambahkan ke hitungan data yang gagal
-                    $failDataCount++;
+                try {
+                    // Check if NIK already exists in the data_pemilih table
+                    $existingRw = data_rw::where('nik', $data['nik'])->first();
+
+                    if (!$existingRw) {
+                        $dataRw = new data_rw([
+                            'kota' => $data['kota'],
+                            'kec' => $data['kec'],
+                            'kel' => $data['kel'],
+                            'rw' => $data['rw'],
+                            'support' => $data['support'],
+                            'relawan_id' => $request->relawan_id,
+                        ]);
+                        $dataRw->save();
+                        $successDataCount++;
+                    } else {
+                        $errors[] = "NIK already exists for row " . ($index + 1);
+                        $failDataCount++; // Increment fail count
+                        $failedRows[] = $index + 1;
+                    }
+                } catch (\Exception $e) {
+                    // Handle any exception during the data import process
+                    $failDataCount++; // Increment fail count
+                    $failedRows[] = $index + 1;
+                    $errors[] = "Error on row " . ($index + 1) . ": " . $e->getMessage();
                 }
             }
 
@@ -80,6 +91,8 @@ class RwController extends Controller
                 'message' => 'Data imported successfully.',
                 'success_data_count' => $successDataCount,
                 'fail_data_count' => $failDataCount,
+                'failed_rows' => $failedRows,
+                'errors' => $errors,
             ]);
         } catch (\Exception $e) {
             // Return error response if the process fails

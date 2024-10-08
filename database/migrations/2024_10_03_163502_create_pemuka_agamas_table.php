@@ -15,6 +15,7 @@ class CreatePemukaAgamasTable extends Migration
     {
         Schema::create('pemuka_agamas', function (Blueprint $table) {
             $table->id();
+            $table->string('nik')->unique();
             $table->string('nama');
             $table->string('pesantren');
             $table->string('alamat');

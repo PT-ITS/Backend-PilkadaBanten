@@ -10,6 +10,7 @@ class data_rw extends Model
     use HasFactory;
 
     protected $fillable = [
+        'nik',
         'kota',
         'kec',
         'kel',
