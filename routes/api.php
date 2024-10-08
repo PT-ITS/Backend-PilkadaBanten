@@ -77,6 +77,8 @@ Route::group([
     Route::get('export-all', [BantuanRelawanController::class, 'exportAllBantuanRelawan']);
     Route::get('export-by-relawan/{id}', [BantuanRelawanController::class, 'exportBantuanRelawanByRelawan']);
     Route::get('info/{id}', [BantuanRelawanController::class, 'infoBantuanByRelawan']);
+    Route::get('sasaran', [BantuanRelawanController::class, 'infoJumlahSasaranBantuan']);
+    Route::get('jenis', [BantuanRelawanController::class, 'infoJumlahJenisBantuan']);
     Route::get('list/{id}', [BantuanRelawanController::class, 'listBantuanRelawanByRelawan']);
     Route::post('import', [BantuanRelawanController::class, 'importBantuanRelawanByRelawan']);
     Route::post('input', [BantuanRelawanController::class, 'createBantuanByRelawan']);
