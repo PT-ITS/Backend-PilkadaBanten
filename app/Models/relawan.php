@@ -35,4 +35,10 @@ class relawan extends Model
     {
         return $this->hasMany(data_rw::class, 'relawan_id');
     }
+
+    // Define the relationship with bantuan_relawans
+    public function bantuanRelawans()
+    {
+        return $this->hasMany(bantuan_relawan::class, 'relawan_id');
+    }
 }

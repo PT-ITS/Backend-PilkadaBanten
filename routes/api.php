@@ -12,6 +12,7 @@ use App\Http\Controllers\BantuanRwController;
 use App\Http\Controllers\BantuanPemukaAgamaController;
 use App\Http\Controllers\BantuanRelawanController;
 use App\Http\Controllers\BantuanTokohController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DukunganTokohController;
 use App\Http\Controllers\RtController;
 use App\Http\Controllers\RwController;
@@ -36,6 +37,21 @@ Route::group([
     });
 });
 
+// Dashboard
+Route::group([
+    'prefix' => 'dashboard'
+], function () {
+    // Route::group([
+    //     'middleware' => 'auth:api'
+    // ], function () {
+    Route::get('/br-available-years', [DashboardController::class, 'getBantuanRelawanAvailableYears']);
+    Route::get('/br-list-line-by-sasaran', [DashboardController::class, 'listLineChartDataBantuanRelawanBySasaran']);
+    Route::get('/br-list-line-by-jenis-bantuan', [DashboardController::class, 'listLineChartDataBantuanRelawanByJenisBantuan']);
+    Route::get('/br-list-pie-by-sasaran', [DashboardController::class, 'listPieChartDataBantuanRelawanBySasaran']);
+    Route::get('/br-list-pie-by-jenis-bantuan', [DashboardController::class, 'listPieChartDataBantuanRelawanByJenisBantuan']);
+    // });
+});
+
 // Pemilih
 Route::group([
     'prefix' => 'pemilih'
@@ -58,6 +74,7 @@ Route::group([
     // Route::group([
     //     'middleware' => 'auth:api'
     // ], function () {
+    Route::get('export', [BantuanRelawanController::class, 'exportBantuanRelawan']);
     Route::get('info/{id}', [BantuanRelawanController::class, 'infoBantuanByRelawan']);
     Route::get('sasaran', [BantuanRelawanController::class, 'infoJumlahSasaranBantuan']);
     Route::get('jenis', [BantuanRelawanController::class, 'infoJumlahJenisBantuan']);

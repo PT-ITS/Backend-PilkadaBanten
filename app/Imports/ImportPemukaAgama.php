@@ -16,6 +16,7 @@ class ImportPemukaAgama implements ToModel, WithHeadingRow
     public function model(array $row)
     {
         return new pemuka_agama([
+            'nik' =>  $row['nik'],
             'nama' =>  $row['nama'],
             'pesantren' =>  $row['pesantren'],
             'alamat' =>  $row['alamat'],

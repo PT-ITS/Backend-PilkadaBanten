@@ -10,6 +10,7 @@ class pemuka_agama extends Model
     use HasFactory;
 
     protected $fillable = [
+        'nik',
         'nama',
         'pesantren',
         'alamat',
