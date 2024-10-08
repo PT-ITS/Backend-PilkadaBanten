@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Imports\ImportPemilih;
 use App\Models\data_pemilih;
-use App\Models\Relawan;
+use App\Models\relawan;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
@@ -23,12 +23,12 @@ class PemilihController extends Controller
     {
         // Ambil data relawan berdasarkan id
         $relawan = Relawan::find($id);
-    
+
         // Cek apakah data relawan ditemukan
         if ($relawan) {
             // Ambil data pemilih yang terkait dengan relawan ini
             $dataPemilih = $relawan->data_pemilih()->get(); // Menggunakan relasi hasMany
-            
+
             // Gabungkan data relawan dan data pemilih dalam array 'data'
             return response()->json([
                 'id' => $id,
@@ -49,7 +49,7 @@ class PemilihController extends Controller
             return response()->json(['message' => 'Relawan tidak ditemukan'], 404);
         }
     }
-    
+
     public function importDataPemilih(Request $request)
     {
         // Validate the incoming request, including the Excel file and relawan data
@@ -240,6 +240,21 @@ class PemilihController extends Controller
             return response()->json(['message' => 'update data bantuan pemlih success'], 200);
         } catch (\Exception $e) {
             DB::rollBack();
+            return response()->json(['message' => $e->getMessage()], 401);
+        }
+    }
+
+    public function deletePemilih($id)
+    {
+        try {
+            $dataPemilih = data_pemilih::find($id);
+
+            if ($dataPemilih) {
+                $dataPemilih->delete();
+                return response()->json(['message' => 'delete data pemilih success'], 200);
+            }
+            return response()->json(['message' => 'data pemilih tidak ditemukan'], 404);
+        } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 401);
         }
     }
