@@ -32,9 +32,9 @@ class BantuanRelawanExport implements WithMultipleSheets
 
         $sheetNames = [
             'warga' => 'Warga',
-            'rt' => 'RT',
-            'rw' => 'RW',
-            'pa' => 'Pemuka Agama',
+            'ketua rt' => 'RT',
+            'ketua rw' => 'RW',
+            'pemuka agama' => 'Pemuka Agama',
         ];
 
         foreach ($sasarans as $sasaran) {
