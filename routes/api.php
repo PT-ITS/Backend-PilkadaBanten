@@ -4,31 +4,30 @@ use App\Http\Controllers\FnbController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PemilihController;
+use App\Http\Controllers\BantuanMasyarakatController;
+use App\Http\Controllers\BantuanPemilihController;
+use App\Http\Controllers\BantuanRtController;
+use App\Http\Controllers\BantuanRwController;
+use App\Http\Controllers\BantuanPemukaAgamaController;
+use App\Http\Controllers\BantuanRelawanController;
+use App\Http\Controllers\BantuanTokohController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\HiburanController;
-use App\Http\Controllers\HotelController;
-use App\Http\Controllers\KaryawanController;
-use App\Http\Controllers\ImportDataController;
-use App\Http\Controllers\RekapitulasiController;
+use App\Http\Controllers\DukunganTokohController;
+use App\Http\Controllers\RtController;
+use App\Http\Controllers\RwController;
+use App\Http\Controllers\PemukaAgamaController;
 
 Route::group([
     'prefix' => 'auth'
 ], function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
-    Route::post('import', [AuthController::class, 'import']);
     Route::group([
         'middleware' => 'auth:api'
     ], function () {
         Route::post('logout', [AuthController::class, 'logout']);
-        Route::post('refresh', [AuthController::class, 'refresh']);
         Route::get('me', [AuthController::class, 'me']);
-        Route::get('list-pengguna', [AuthController::class, 'listPengguna']);
-        Route::get('list-pengelola', [AuthController::class, 'listPengelola']);
-        Route::post('update/{id}', [AuthController::class, 'update']);
-        Route::delete('delete/{id}', [AuthController::class, 'delete']);
-
-
         Route::group([
             'middleware' => 'auth:api'
         ], function () {
@@ -38,86 +37,198 @@ Route::group([
     });
 });
 
-// All
+// Dashboard
 Route::group([
-    'middleware' => 'auth:api'
+    'prefix' => 'dashboard'
 ], function () {
-    Route::get('get-data-dashboard', [DashboardController::class, 'getDataDashboard']);
-    Route::get('get-data-dashboard/{id}', [DashboardController::class, 'dashboardUsaha']);
-    Route::get('list-all', [DashboardController::class, 'listAll']);
-    Route::get('export', [DashboardController::class, 'export']);
+    // Route::group([
+    //     'middleware' => 'auth:api'
+    // ], function () {
+    Route::get('/br-available-years', [DashboardController::class, 'getBantuanRelawanAvailableYears']);
+    Route::get('/br-list-line-by-sasaran', [DashboardController::class, 'listLineChartDataBantuanRelawanBySasaran']);
+    Route::get('/br-list-line-by-jenis-bantuan', [DashboardController::class, 'listLineChartDataBantuanRelawanByJenisBantuan']);
+    Route::get('/br-list-pie-by-sasaran', [DashboardController::class, 'listPieChartDataBantuanRelawanBySasaran']);
+    Route::get('/br-list-pie-by-jenis-bantuan', [DashboardController::class, 'listPieChartDataBantuanRelawanByJenisBantuan']);
+    // });
 });
 
-// Hotel
+// Pemilih
 Route::group([
-    'prefix' => 'hotel'
+    'prefix' => 'pemilih'
 ], function () {
-    Route::group([
-        'middleware' => 'auth:api'
-    ], function () {
-        Route::get('list-hotel', [HotelController::class, 'listDataHotel']);
-        Route::get('detail-hotel/{id}', [HotelController::class, 'detailDataHotel']);
-        Route::post('input-hotel', [HotelController::class, 'inputDataHotelAndKaryawan']);
-        Route::post('update-hotel/{id}', [HotelController::class, 'updateDataHotel']);
-        Route::delete('delete-hotel/{id}', [HotelController::class, 'deleteDataHotel']);
-        Route::post('validate-hotel/{id}', [HotelController::class, 'validateDataHotel']);
-    });
+    // Route::group([
+    //     'middleware' => 'auth:api'
+    // ], function () {
+    Route::get('list-by-relawan/{id}', [PemilihController::class, 'listPemilihByRelawan']);
+    Route::get('list-relawan', [PemilihController::class, 'listRelawan']);
+    Route::post('import', [PemilihController::class, 'importDataPemilih']);
+    Route::post('import-by-relawan', [PemilihController::class, 'importPemilihByRelawan']);
+    Route::delete('delete-relawan/{id}', [PemilihController::class, 'deleteRelawan']);
+    // });
 });
 
-// Hiburan
+// Bantuan Relawan
 Route::group([
-    'prefix' => 'hiburan'
+    'prefix' => 'bantuan-relawan'
 ], function () {
-    Route::group([
-        'middleware' => 'auth:api'
-    ], function () {
-        Route::get('list-hiburan', [HiburanController::class, 'listHiburan']);
-        Route::get('detail-hiburan/{id}', [HiburanController::class, 'detailHiburan']);
-        Route::post('input-hiburan', [HiburanController::class, 'inputHiburanAndKaryawan']);
-        Route::post('update-hiburan/{id}', [HiburanController::class, 'updateHiburan']);
-        Route::delete('delete-hiburan/{id}', [HiburanController::class, 'deleteHiburan']);
-        Route::post('validate-hiburan/{id}', [HiburanController::class, 'validateHiburan']);
-    });
+    // Route::group([
+    //     'middleware' => 'auth:api'
+    // ], function () {
+    Route::get('export-all', [BantuanRelawanController::class, 'exportAllBantuanRelawan']);
+    Route::get('export-by-relawan/{id}', [BantuanRelawanController::class, 'exportBantuanRelawanByRelawan']);
+    Route::get('info/{id}', [BantuanRelawanController::class, 'infoBantuanByRelawan']);
+    Route::get('sasaran', [BantuanRelawanController::class, 'infoJumlahSasaranBantuan']);
+    Route::get('jenis', [BantuanRelawanController::class, 'infoJumlahJenisBantuan']);
+    Route::get('list/{id}', [BantuanRelawanController::class, 'listBantuanRelawanByRelawan']);
+    Route::post('import', [BantuanRelawanController::class, 'importBantuanRelawanByRelawan']);
+    Route::post('input', [BantuanRelawanController::class, 'createBantuanByRelawan']);
+    Route::post('update/{id}', [BantuanRelawanController::class, 'updateBantuanRelawan']);
+    Route::delete('delete/{id}', [BantuanRelawanController::class, 'deleteBantuanRelawan']);
+    // });
 });
 
-// FnB
+// Bantuan Pemilih
+// Route::group([
+//     'prefix' => 'bantuan-pemilih'
+// ], function () {
+//     // Route::group([
+//     //     'middleware' => 'auth:api'
+//     // ], function () {
+//     Route::get('list/{id}', [BantuanPemilihController::class, 'listBantuanPemilihByRelawan']);
+//     Route::post('import', [BantuanPemilihController::class, 'importBantuanPemilihByRelawan']);
+//     Route::post('update/{id}', [BantuanPemilihController::class, 'updateBantuanPemilih']);
+//     Route::delete('delete/{id}', [BantuanPemilihController::class, 'deleteBantuanPemilih']);
+//     // });
+// });
+
+// Rt
 Route::group([
-    'prefix' => 'fnb'
+    'prefix' => 'rt'
 ], function () {
-    Route::group([
-        'middleware' => 'auth:api'
-    ], function () {
-        Route::get('list-fnb', [FnbController::class, 'listFnb']);
-        Route::get('detail-fnb/{id}', [FnbController::class, 'detailFnb']);
-        Route::post('input-fnb', [FnbController::class, 'inputFnbAndKaryawan']);
-        Route::post('update-fnb/{id}', [FnbController::class, 'updateFnb']);
-        Route::delete('delete-fnb/{id}', [FnbController::class, 'deleteFnb']);
-        Route::post('validate-fnb/{id}', [FnbController::class, 'validateFnb']);
-    });
+    // Route::group([
+    //     'middleware' => 'auth:api'
+    // ], function () {
+    Route::get('list/{id}', [RtController::class, 'listRt']);
+    Route::post('import', [RtController::class, 'importRt']);
+    Route::post('update/{id}', [RtController::class, 'updateRt']);
+    Route::delete('delete/{id}', [RtController::class, 'deleteRt']);
+    // });
 });
 
-// Karyawan
+// Bantuan Rt
+// Route::group([
+//     'prefix' => 'bantuan-rt'
+// ], function () {
+//     // Route::group([
+//     //     'middleware' => 'auth:api'
+//     // ], function () {
+//     Route::get('list/{id}', [BantuanRtController::class, 'listBantuanRtByRt']);
+//     Route::post('import', [BantuanRtController::class, 'importBantuanRtByRt']);
+//     Route::post('update/{id}', [BantuanRtController::class, 'updateBantuanRt']);
+//     Route::delete('delete/{id}', [BantuanRtController::class, 'deleteBantuanRt']);
+//     // });
+// });
+
+// Rw
 Route::group([
-    'prefix' => 'karyawan'
+    'prefix' => 'rw'
 ], function () {
-    Route::group([
-        'middleware' => 'auth:api'
-    ], function () {
-        Route::get('list-karyawan-hotel/{id}', [KaryawanController::class, 'listKaryawanHotel']);
-        Route::get('list-karyawan-hiburan/{id}', [KaryawanController::class, 'listKaryawanHiburan']);
-        Route::get('list-karyawan-fnb/{id}', [KaryawanController::class, 'listKaryawanFnb']);
-        Route::post('import-karyawan-hotel/{id}', [KaryawanController::class, 'importKaryawanHotel']);
-        Route::post('import-karyawan-hiburan/{id}', [KaryawanController::class, 'importKaryawanHiburan']);
-        Route::post('import-karyawan-fnb/{id}', [KaryawanController::class, 'importKaryawanFnb']);
-        Route::post('input-karyawan-hotel', [KaryawanController::class, 'inputDataKaryawanHotel']);
-        Route::post('input-karyawan-hiburan', [KaryawanController::class, 'inputDataKaryawanHiburan']);
-        Route::post('input-karyawan-fnb', [KaryawanController::class, 'inputDataKaryawanFnb']);
-        Route::post('update-karyawan/{id}', [KaryawanController::class, 'updateDataKaryawan']);
-        Route::delete('delete-karyawan/{id}', [KaryawanController::class, 'deleteDataKaryawan']);
-    });
+    // Route::group([
+    //     'middleware' => 'auth:api'
+    // ], function () {
+    Route::get('list/{id}', [RwController::class, 'listRw']);
+    Route::post('import', [RwController::class, 'importRw']);
+    Route::post('update/{id}', [RwController::class, 'updateRw']);
+    Route::delete('delete/{id}', [RwController::class, 'deleteRw']);
+    // });
 });
 
+// Bantuan Rw
+// Route::group([
+//     'prefix' => 'bantuan-rw'
+// ], function () {
+//     // Route::group([
+//     //     'middleware' => 'auth:api'
+//     // ], function () {
+//     Route::get('list/{id}', [BantuanRwController::class, 'listBantuanRwByRw']);
+//     Route::post('import', [BantuanRwController::class, 'importBantuanRwByRw']);
+//     Route::post('update/{id}', [BantuanRwController::class, 'updateBantuanRw']);
+//     Route::delete('delete/{id}', [BantuanRwController::class, 'deleteBantuanRw']);
+//     // });
+// });
 
-// Log
-Route::get('/log', [DashboardController::class, 'log']);
-Route::get('/rekapitulasi', [RekapitulasiController::class, 'rekapitulasi']);
+// Pemuka Agama
+Route::group([
+    'prefix' => 'pemuka-agama'
+], function () {
+    // Route::group([
+    //     'middleware' => 'auth:api'
+    // ], function () {
+    Route::get('list/{id}', [PemukaAgamaController::class, 'listPemukaAgama']);
+    Route::post('import', [PemukaAgamaController::class, 'importPemukaAgama']);
+    Route::post('update/{id}', [PemukaAgamaController::class, 'updatePemukaAgama']);
+    Route::delete('delete/{id}', [PemukaAgamaController::class, 'deletePemukaAgama']);
+    // });
+});
+
+// Bantuan Pemuka Agama
+// Route::group([
+//     'prefix' => 'bantuan-pemuka-agama'
+// ], function () {
+//     // Route::group([
+//     //     'middleware' => 'auth:api'
+//     // ], function () {
+//     Route::get('list/{id}', [BantuanPemukaAgamaController::class, 'listBantuanPemukaAgamaByPemukaAgama']);
+//     Route::post('import', [BantuanPemukaAgamaController::class, 'importBantuanPemukaAgamaByPemukaAgama']);
+//     Route::post('update/{id}', [BantuanPemukaAgamaController::class, 'updateBantuanPemukaAgama']);
+//     Route::delete('delete/{id}', [BantuanPemukaAgamaController::class, 'deleteBantuanPemukaAgama']);
+//     // });
+// });
+
+// Bantuan Masyarakat
+Route::group([
+    'prefix' => 'bantuan-masyarakat'
+], function () {
+    // Route::group([
+    //     'middleware' => 'auth:api'
+    // ], function () {
+    Route::get('list', [BantuanMasyarakatController::class, 'listDataBantuanMasyarakat']);
+    Route::get('detail/{id}', [BantuanMasyarakatController::class, 'detailDataBantuanMasyarakat']);
+    Route::post('import', [BantuanMasyarakatController::class, 'importDataBantuanMasyarakat']);
+    Route::post('input', [BantuanMasyarakatController::class, 'inputDataBantuanMasyarakat']);
+    Route::post('update/{id}', [BantuanMasyarakatController::class, 'updateDataBantuanMasyarakat']);
+    Route::delete('delete/{id}', [BantuanMasyarakatController::class, 'deleteDataBantuanMasyarakat']);
+    // });
+});
+
+// Bantuan Tokoh
+Route::group([
+    'prefix' => 'bantuan-tokoh'
+], function () {
+    // Route::group([
+    //     'middleware' => 'auth:api'
+    // ], function () {
+    Route::get('list', [BantuanTokohController::class, 'listDataBantuanTokoh']);
+    Route::get('detail/{id}', [BantuanTokohController::class, 'detailDataBantuanTokoh']);
+    Route::post('import', [BantuanTokohController::class, 'importDataBantuanTokoh']);
+    Route::post('input', [BantuanTokohController::class, 'inputDataBantuanTokoh']);
+    Route::post('update/{id}', [BantuanTokohController::class, 'updateDataBantuanTokoh']);
+    Route::delete('delete/{id}', [BantuanTokohController::class, 'deleteDataBantuanTokoh']);
+    // });
+});
+
+// Dukungan Tokoh
+Route::group([
+    'prefix' => 'dukungan-tokoh'
+], function () {
+    // Route::group([
+    //     'middleware' => 'auth:api'
+    // ], function () {
+    Route::get('list', [DukunganTokohController::class, 'listDataDukunganTokoh']);
+    Route::get('detail/{id}', [DukunganTokohController::class, 'detailDataDukunganTokoh']);
+    Route::post('import', [DukunganTokohController::class, 'importDataDukunganTokoh']);
+    Route::post('input', [DukunganTokohController::class, 'inputDataDukunganTokoh']);
+    Route::post('update/{id}', [DukunganTokohController::class, 'updateDataDukunganTokoh']);
+    Route::delete('delete/{id}', [DukunganTokohController::class, 'deleteDataDukunganTokoh']);
+    // });
+});

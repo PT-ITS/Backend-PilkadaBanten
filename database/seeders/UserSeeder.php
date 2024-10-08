@@ -2,6 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\bantuan_relawan;
+use App\Models\data_pemilih;
+use App\Models\data_rt;
+use App\Models\data_rw;
+use App\Models\pemuka_agama;
+use App\Models\relawan;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -18,113 +24,95 @@ class UserSeeder extends Seeder
     {
         // pengurus
         User::create([
-            'name' => 'disparekrafdki',
-            'email' => 'disparekrafdki@surveiwisatadki.com',
-            'password' => Hash::make('W1547a!&$1k'),
-            'alamat' => 'test',
-            'level' => '1',
-            'status' => '1',
-            'noHP' => '0812345',
-            'created_at' => Carbon::create(2024, 4, 24, 12, 0, 0) // Format: (year, month, day, hour, minute, second)
+            'name' => 'admin',
+            'email' => 'admin@gmail.com',
+            'password' => Hash::make('12345'),
+            'created_at' => Carbon::create(2024, 10, 3, 12, 0, 0), // Format: (year, month, day, hour, minute, second)
+            'updated_at' => Carbon::create(2024, 10, 3, 12, 0, 0) // Format: (year, month, day, hour, minute, second)
         ]);
-        User::create([
-            'name' => 'surveyor',
-            'email' => 'instincsurveyor@surveiwisatadki.com',
-            'password' => Hash::make('W1547a!&$1k'),
-            'alamat' => 'test',
-            'level' => '0',
-            'status' => '1',
-            'noHP' => '0812345'
+        relawan::create([
+            'nik' => '3601',
+            'nama' => 'Mang Ari',
+            'alamat' => 'Jl. Raya Ciboleger',
+            'kota' => 'Kabupaten Lebak',
+            'kec' => 'Kec. Leuwidamar',
+            'kel' => 'Cisimeut',
+            'rt_rw' => 'RT 09/RW 09',
+            'jumlah_data' => '1000',
         ]);
-        User::create([
-            'name' => 'akmalnugra15',
-            'email' => 'akmalnugra15@surveiwisatadki.com',
-            'password' => Hash::make('akmalnugra15'),
-            'alamat' => 'alamat surveyor',
-            'level' => '0',
-            'status' => '1',
-            'noHP' => '08123456789'
+        data_pemilih::create([
+            'nik' => '3602',
+            'nama' => 'Mang Yayan',
+            'alamat' => 'Jl. Raya Ciboleger',
+            'kota' => 'Kabupaten Lebak',
+            'kec' => 'Kec. Leuwidamar',
+            'desa_kel' => 'Cisimeut',
+            'rt_rw' => 'RT 09/RW 09',
+            'tps' => 'TPS 01',
+            'relawan_id' => '1',
         ]);
-        User::create([
-            'name' => 'ramadhan123.rar',
-            'email' => 'ramadhan123.rar@surveiwisatadki.com',
-            'password' => Hash::make('ramadhan123.rar'),
-            'alamat' => 'alamat surveyor',
-            'level' => '0',
-            'status' => '1',
-            'noHP' => '08123456789'
+        data_pemilih::create([
+            'nik' => '3603',
+            'nama' => 'Mang Ucup',
+            'alamat' => 'Jl. Raya Ciboleger',
+            'kota' => 'Kabupaten Lebak',
+            'kec' => 'Kec. Leuwidamar',
+            'desa_kel' => 'Cisimeut',
+            'rt_rw' => 'RT 09/RW 09',
+            'tps' => 'TPS 01',
+            'relawan_id' => '1',
         ]);
-        User::create([
-            'name' => 'sadewaprawirodihardjo',
-            'email' => 'sadewaprawirodihardjo@surveiwisatadki.com',
-            'password' => Hash::make('sadewaprawirodihardjo'),
-            'alamat' => 'alamat surveyor',
-            'level' => '0',
-            'status' => '1',
-            'noHP' => '08123456789'
+        data_pemilih::create([
+            'nik' => '3604',
+            'nama' => 'Mang Asep',
+            'alamat' => 'Jl. Raya Ciboleger',
+            'kota' => 'Kabupaten Lebak',
+            'kec' => 'Kec. Leuwidamar',
+            'desa_kel' => 'Cisimeut',
+            'rt_rw' => 'RT 09/RW 09',
+            'tps' => 'TPS 01',
+            'relawan_id' => '1',
         ]);
-        User::create([
-            'name' => 'kevinhadi.saputra3',
-            'email' => 'kevinhadi.saputra3@surveiwisatadki.com',
-            'password' => Hash::make('kevinhadi.saputra3'),
-            'alamat' => 'alamat surveyor',
-            'level' => '0',
-            'status' => '1',
-            'noHP' => '08123456789'
+        data_rw::create([
+            'nik' => '3605',
+            'nama' => 'Mang Cecep',
+            'kota' => 'Kabupaten Lebak',
+            'kec' => 'Kec. Leuwidamar',
+            'kel' => 'Cisimeut',
+            'rw' => 'RW 09',
+            'support' => '1',
+            'relawan_id' => '1',
         ]);
-        User::create([
-            'name' => 'Birrulwalidain814',
-            'email' => 'Birrulwalidain814@surveiwisatadki.com',
-            'password' => Hash::make('Birrulwalidain814'),
-            'alamat' => 'alamat surveyor',
-            'level' => '0',
-            'status' => '1',
-            'noHP' => '08123456789'
+        data_rt::create([
+            'nik' => '3606',
+            'nama' => 'Mang Bagas',
+            'kota' => 'Kabupaten Lebak',
+            'kec' => 'Kec. Leuwidamar',
+            'kel' => 'Cisimeut',
+            'rw' => 'RW 09',
+            'rt' => 'RT 09',
+            'support' => '1',
+            'relawan_id' => '1',
         ]);
-        User::create([
-            'name' => 'mhdjfri.08',
-            'email' => 'mhdjfri.08@surveiwisatadki.com',
-            'password' => Hash::make('mhdjfri.08'),
-            'alamat' => 'alamat surveyor',
-            'level' => '0',
-            'status' => '1',
-            'noHP' => '08123456789'
+        pemuka_agama::create([
+            'nik' => '3607',
+            'nama' => 'Kyai Hari',
+            'pesantren' => 'Ponpes Al-Hari',
+            'alamat' => 'Jl. Raya Ciboleger',
+            'kota' => 'Kabupaten Lebak',
+            'kec' => 'Kec. Leuwidamar',
+            'kel' => 'Cisimeut',
+            'support' => '1',
+            'relawan_id' => '1',
         ]);
-        User::create([
-            'name' => 'bimo.adhirajasa',
-            'email' => 'bimo.adhirajasa@surveiwisatadki.com',
-            'password' => Hash::make('bimo.adhirajasa'),
-            'alamat' => 'alamat surveyor',
-            'level' => '0',
-            'status' => '1',
-            'noHP' => '08123456789'
-        ]);
-        User::create([
-            'name' => 'valenevlds',
-            'email' => 'valenevlds@surveiwisatadki.com',
-            'password' => Hash::make('valenevlds'),
-            'alamat' => 'alamat surveyor',
-            'level' => '0',
-            'status' => '1',
-            'noHP' => '08123456789'
-        ]);
-        User::create([
-            'name' => 'nayakhaanin',
-            'email' => 'nayakhaanin@surveiwisatadki.com',
-            'password' => Hash::make('nayakhaanin'),
-            'alamat' => 'alamat surveyor',
-            'level' => '0',
-            'status' => '1',
-            'noHP' => '08123456789'
-        ]);
-        User::create([
-            'name' => 'cavanisse',
-            'email' => 'cavanisse@surveiwisatadki.com',
-            'password' => Hash::make('cavanisse'),
-            'alamat' => 'alamat surveyor',
-            'level' => '0',
-            'status' => '1',
-            'noHP' => '08123456789'
+        bantuan_relawan::create([
+            'jenis_bantuan' => 'beras',
+            'tanggal' => '2024-10-05',
+            'sasaran' => 'warga',
+            'harga_satuan' => '45000',
+            'jumlah_penerima' => '1000',
+            'jumlah_bantuan' => '45000000',
+            'relawan_id' => '1',
         ]);
     }
 }

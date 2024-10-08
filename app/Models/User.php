@@ -27,11 +27,6 @@ class User extends Authenticatable implements JWTSubject
         'password',
     ];
 
-    public function hotels()
-    {
-        return $this->hasMany(Hotel::class, 'surveyor_id');
-    }
-
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -56,11 +51,6 @@ class User extends Authenticatable implements JWTSubject
         return $this->getKey();
     }
 
-    public function kta()
-    {
-        return $this->hasOne(KTA::class);
-    }
-
     /**
      * Return a key value array, containing any custom claims to be added to the JWT.
      *
@@ -69,26 +59,5 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
-    }
-
-    // Mendefinisikan relasi many to many antara User dan Komisariat
-    public function komisariats()
-    {
-        return $this->belongsToMany(Komisariat::class, 'komisariat_users', 'user_id', 'komisariat_id');
-    }
-
-    public function chats(): HasMany
-    {
-        return $this->hasMany(Chat::class, 'created_by');
-    }
-
-    public function routeNotificationForOneSignal(): array
-    {
-        return ['tags' => ['key' => 'userId', 'relation' => '=', 'value' => (string)($this->id)]];
-    }
-
-    public function sendNewMessageNotification(array $data): void
-    {
-        $this->notify(new MessageSent($data));
     }
 }
