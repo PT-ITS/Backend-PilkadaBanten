@@ -18,10 +18,20 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class BantuanRelawanController extends Controller
 {
-    public function exportBantuanRelawan()
+    public function exportAllBantuanRelawan()
     {
         // Fetch relawan data with related bantuan_relawans
         $relawans = Relawan::with('bantuanRelawans')->get();
+
+        return Excel::download(new BantuanRelawanExport($relawans), 'data_bantuan_relawan_export.xlsx');
+    }
+
+    public function exportBantuanRelawanByRelawan($id)
+    {
+        // Fetch relawan data with related bantuan_relawans
+        $relawans = Relawan::with('bantuanRelawans')
+            ->where('relawans.id', $id)
+            ->get();
 
         return Excel::download(new BantuanRelawanExport($relawans), 'data_bantuan_relawan_export.xlsx');
     }

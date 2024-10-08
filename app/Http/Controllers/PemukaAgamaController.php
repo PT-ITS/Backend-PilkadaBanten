@@ -64,6 +64,7 @@ class PemukaAgamaController extends Controller
 
                     if (!$existingPemukaAgama) {
                         $dataPemukaAgama = new pemuka_agama([
+                            'nik' => $data['nik'],
                             'nama' => $data['nama'],
                             'pesantren' => $data['pesantren'],
                             'alamat' => $data['alamat'],

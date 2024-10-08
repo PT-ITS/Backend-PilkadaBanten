@@ -53,8 +53,8 @@ class RwController extends Controller
             // Initialize counters for success and failure tracking
             $successDataCount = 0;
             $failDataCount = 0;
-            // $failedRows = [];
-            // $errors = [];
+            $failedRows = [];
+            $errors = [];
 
             // Loop through the imported data
             foreach ($importedDataRw as $index => $data) {
@@ -64,6 +64,8 @@ class RwController extends Controller
 
                     if (!$existingRw) {
                         $dataRw = new data_rw([
+                            'nik' => $data['nik'],
+                            'nama' => $data['nama'],
                             'kota' => $data['kota'],
                             'kec' => $data['kec'],
                             'kel' => $data['kel'],

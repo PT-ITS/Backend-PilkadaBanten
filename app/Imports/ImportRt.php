@@ -17,6 +17,7 @@ class ImportRt implements ToModel, WithHeadingRow
     {
         return new data_rt([
             'nik' =>  $row['nik'],
+            'nama' =>  $row['nama'],
             'kota' =>  $row['kota'],
             'kec' =>  $row['kec'],
             'kel' =>  $row['kel'],
