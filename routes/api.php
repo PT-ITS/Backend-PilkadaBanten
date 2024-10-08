@@ -74,7 +74,8 @@ Route::group([
     // Route::group([
     //     'middleware' => 'auth:api'
     // ], function () {
-    Route::get('export', [BantuanRelawanController::class, 'exportBantuanRelawan']);
+    Route::get('export-all', [BantuanRelawanController::class, 'exportAllBantuanRelawan']);
+    Route::get('export-by-relawan/{id}', [BantuanRelawanController::class, 'exportBantuanRelawanByRelawan']);
     Route::get('info/{id}', [BantuanRelawanController::class, 'infoBantuanByRelawan']);
     Route::get('sasaran', [BantuanRelawanController::class, 'infoJumlahSasaranBantuan']);
     Route::get('jenis', [BantuanRelawanController::class, 'infoJumlahJenisBantuan']);

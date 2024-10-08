@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
             'updated_at' => Carbon::create(2024, 10, 3, 12, 0, 0) // Format: (year, month, day, hour, minute, second)
         ]);
         relawan::create([
-            'nik' => '3600000000000001',
+            'nik' => '3601',
             'nama' => 'Mang Ari',
             'alamat' => 'Jl. Raya Ciboleger',
             'kota' => 'Kabupaten Lebak',
@@ -41,7 +41,7 @@ class UserSeeder extends Seeder
             'jumlah_data' => '1000',
         ]);
         data_pemilih::create([
-            'nik' => '3600000000000002',
+            'nik' => '3602',
             'nama' => 'Mang Yayan',
             'alamat' => 'Jl. Raya Ciboleger',
             'kota' => 'Kabupaten Lebak',
@@ -52,7 +52,7 @@ class UserSeeder extends Seeder
             'relawan_id' => '1',
         ]);
         data_pemilih::create([
-            'nik' => '3600000000000003',
+            'nik' => '3603',
             'nama' => 'Mang Ucup',
             'alamat' => 'Jl. Raya Ciboleger',
             'kota' => 'Kabupaten Lebak',
@@ -63,7 +63,7 @@ class UserSeeder extends Seeder
             'relawan_id' => '1',
         ]);
         data_pemilih::create([
-            'nik' => '3600000000000004',
+            'nik' => '3604',
             'nama' => 'Mang Asep',
             'alamat' => 'Jl. Raya Ciboleger',
             'kota' => 'Kabupaten Lebak',
@@ -74,6 +74,8 @@ class UserSeeder extends Seeder
             'relawan_id' => '1',
         ]);
         data_rw::create([
+            'nik' => '3605',
+            'nama' => 'Mang Cecep',
             'kota' => 'Kabupaten Lebak',
             'kec' => 'Kec. Leuwidamar',
             'kel' => 'Cisimeut',
@@ -82,6 +84,8 @@ class UserSeeder extends Seeder
             'relawan_id' => '1',
         ]);
         data_rt::create([
+            'nik' => '3606',
+            'nama' => 'Mang Bagas',
             'kota' => 'Kabupaten Lebak',
             'kec' => 'Kec. Leuwidamar',
             'kel' => 'Cisimeut',
@@ -91,6 +95,7 @@ class UserSeeder extends Seeder
             'relawan_id' => '1',
         ]);
         pemuka_agama::create([
+            'nik' => '3607',
             'nama' => 'Kyai Hari',
             'pesantren' => 'Ponpes Al-Hari',
             'alamat' => 'Jl. Raya Ciboleger',

@@ -22,10 +22,10 @@ class BantuanRelawanController extends Controller
     {
         // Ambil semua data relawan
         $dataRelawan = relawan::get();
-    
+
         // Inisialisasi array untuk menyimpan hasil
         $result = [];
-    
+
         // Looping data relawan untuk menghitung jumlah bantuan terkait
         foreach ($dataRelawan as $relawan) {
             $id = $relawan->id; // Ambil id relawan
@@ -36,7 +36,7 @@ class BantuanRelawanController extends Controller
             $berasBantuan = bantuan_relawan::where('relawan_id', $id)->where('jenis_bantuan', 'beras')->count();
             $spandukBantuan = bantuan_relawan::where('relawan_id', $id)->where('jenis_bantuan', 'spanduk')->count();
             $kerudungBantuan = bantuan_relawan::where('relawan_id', $id)->where('jenis_bantuan', 'kerudung')->count();
-           
+
             // Masukkan data relawan dan jumlah bantuan ke dalam array hasil
             $result[] = [
                 'id' => $id,
@@ -53,7 +53,7 @@ class BantuanRelawanController extends Controller
                 'bantuan_kerudung' => $kerudungBantuan,
             ];
         }
-    
+
         // Kembalikan hasil sebagai response JSON
         return response()->json([
             'status' => 'success',
@@ -65,21 +65,21 @@ class BantuanRelawanController extends Controller
     {
         // Ambil semua data relawan
         $dataRelawan = relawan::get();
-    
+
         // Inisialisasi array untuk menyimpan hasil
         $result = [];
-    
+
         // Looping data relawan untuk menghitung jumlah bantuan terkait
         foreach ($dataRelawan as $relawan) {
             $id = $relawan->id; // Ambil id relawan
-    
+
             // Hitung jumlah bantuan berdasarkan kategori sasaran
             $jumlahSemuaBantuan = bantuan_relawan::where('relawan_id', $id)->count();
             $jumlahBantuanWarga = bantuan_relawan::where('relawan_id', $id)->where('sasaran', 'warga')->count();
             $jumlahBantuanRw = bantuan_relawan::where('relawan_id', $id)->where('sasaran', 'ketua rw')->count();
             $jumlahBantuanRt = bantuan_relawan::where('relawan_id', $id)->where('sasaran', 'ketua rt')->count();
             $jumlahBantuanPemukaAgama = bantuan_relawan::where('relawan_id', $id)->where('sasaran', 'pemuka agama')->count();
-    
+
             // Masukkan data relawan dan jumlah bantuan ke dalam array hasil
             $result[] = [
                 'id' => $id,
@@ -95,15 +95,15 @@ class BantuanRelawanController extends Controller
                 'jumlah_bantuan_pemuka_agama' => $jumlahBantuanPemukaAgama,
             ];
         }
-    
+
         // Kembalikan hasil sebagai response JSON
         return response()->json([
             'status' => 'success',
             'data' => $result,
         ]);
     }
-    
-    public function exportBantuanRelawan()
+
+    public function exportAllBantuanRelawan()
     {
         // Fetch relawan data with related bantuan_relawans
         $relawans = Relawan::with('bantuanRelawans')->get();
@@ -111,6 +111,15 @@ class BantuanRelawanController extends Controller
         return Excel::download(new BantuanRelawanExport($relawans), 'data_bantuan_relawan_export.xlsx');
     }
 
+    public function exportBantuanRelawanByRelawan($id)
+    {
+        // Fetch relawan data with related bantuan_relawans
+        $relawans = Relawan::with('bantuanRelawans')
+            ->where('relawans.id', $id)
+            ->get();
+
+        return Excel::download(new BantuanRelawanExport($relawans), 'data_bantuan_relawan_export.xlsx');
+    }
 
     public function infoBantuanByRelawan($id)
     {

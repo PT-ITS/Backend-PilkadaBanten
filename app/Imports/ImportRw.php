@@ -17,6 +17,7 @@ class ImportRw implements ToModel, WithHeadingRow
     {
         return new data_rw([
             'nik' =>  $row['nik'],
+            'nama' =>  $row['nama'],
             'kota' =>  $row['kota'],
             'kec' =>  $row['kec'],
             'kel' =>  $row['kel'],

@@ -64,6 +64,8 @@ class RtController extends Controller
 
                     if (!$existingRt) {
                         $dataRt = new data_rt([
+                            'nik' => $data['nik'],
+                            'nama' => $data['nama'],
                             'kota' => $data['kota'],
                             'kec' => $data['kec'],
                             'kel' => $data['kel'],

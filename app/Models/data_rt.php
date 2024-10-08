@@ -11,6 +11,7 @@ class data_rt extends Model
 
     protected $fillable = [
         'nik',
+        'nama',
         'kota',
         'kec',
         'kel',

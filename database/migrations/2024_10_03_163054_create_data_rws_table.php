@@ -16,6 +16,7 @@ class CreateDataRwsTable extends Migration
         Schema::create('data_rws', function (Blueprint $table) {
             $table->id();
             $table->string('nik')->unique();
+            $table->string('nama');
             $table->string('kota');
             $table->string('kec');
             $table->string('kel');
