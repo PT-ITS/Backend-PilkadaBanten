@@ -127,15 +127,27 @@ class BantuanRelawanController extends Controller
         $jumlahPenerimaBantuanRt = data_rt::where('relawan_id', $id)->count();
         $jumlahPenerimaBantuanRw = data_rw::where('relawan_id', $id)->count();
         $jumlahPenerimaBantuanPemukaAgama = pemuka_agama::where('relawan_id', $id)->count();
+        $jumlahBantuanUang = bantuan_relawan::where('relawan_id', $id)->where('jenis_bantuan', 'uang')->count();
+        $jumlahBantuanKaos = bantuan_relawan::where('relawan_id', $id)->where('jenis_bantuan', 'kaos')->count();
+        $jumlahBantuanStiker = bantuan_relawan::where('relawan_id', $id)->where('jenis_bantuan', 'stiker')->count();
+        $jumlahBantuanBeras = bantuan_relawan::where('relawan_id', $id)->where('jenis_bantuan', 'beras')->count();
+        $jumlahBantuanSpanduk = bantuan_relawan::where('relawan_id', $id)->where('jenis_bantuan', 'spanduk')->count();
+        $jumlahBantuanKerudung = bantuan_relawan::where('relawan_id', $id)->where('jenis_bantuan', 'kerudung')->count();
 
 
         return response()->json([
-            'id' => '1',
+            'id' => $id,
             'data' => [
                 'jumlahWargaPenerimaBantuan' => $jumlahPenerimaBantuanPemilih,
                 'jumlahRtPenerimaBantuan' => $jumlahPenerimaBantuanRt,
                 'jumlahRwPenerimaBantuan' => $jumlahPenerimaBantuanRw,
                 'jumlahPemukaAgamaPenerimaBantuan' => $jumlahPenerimaBantuanPemukaAgama,
+                'jumlahBantuanUang' => $jumlahBantuanUang,
+                'jumlahBantuanKaos' => $jumlahBantuanKaos,
+                'jumlahBantuanStiker' => $jumlahBantuanStiker,
+                'jumlahBantuanBeras' => $jumlahBantuanBeras,
+                'jumlahBantuanSpanduk' => $jumlahBantuanSpanduk,
+                'jumlahBantuanKerudung' => $jumlahBantuanKerudung,
             ]
         ]);
     }
