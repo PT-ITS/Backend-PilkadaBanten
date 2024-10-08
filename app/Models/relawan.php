@@ -25,4 +25,14 @@ class relawan extends Model
     {
         return $this->hasMany(data_pemilih::class, 'relawan_id');
     }
+
+    public function data_rt()
+    {
+        return $this->hasMany(data_rt::class, 'relawan_id');
+    }
+
+    public function data_rw()
+    {
+        return $this->hasMany(data_rw::class, 'relawan_id');
+    }
 }
