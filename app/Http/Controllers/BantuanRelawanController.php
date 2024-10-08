@@ -18,7 +18,7 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class BantuanRelawanController extends Controller
 {
-    public function infoJumlahSasaranBantuan()
+    public function infoJumlahJenisBantuan()
     {
         // Ambil semua data relawan
         $dataRelawan = relawan::get();
@@ -30,7 +30,7 @@ class BantuanRelawanController extends Controller
         foreach ($dataRelawan as $relawan) {
             $id = $relawan->id; // Ambil id relawan
             // Hstikeritung jumlah bantuan berdasarkan kategori sasaran
-            $uangBatuan = bantuan_relawan::where('relawan_id', $id)->where('jenis_bantuan', 'uang')->count();
+            $uangBantuan = bantuan_relawan::where('relawan_id', $id)->where('jenis_bantuan', 'uang')->count();
             $kaosBantuan = bantuan_relawan::where('relawan_id', $id)->where('jenis_bantuan', 'kaos')->count();
             $stikerBantuan = bantuan_relawan::where('relawan_id', $id)->where('jenis_bantuan', 'stiker')->count();
             $berasBantuan = bantuan_relawan::where('relawan_id', $id)->where('jenis_bantuan', 'beras')->count();
@@ -45,12 +45,12 @@ class BantuanRelawanController extends Controller
                 'kota' => $relawan->kota,
                 'kec' => $relawan->kec,
                 'kel' => $relawan->kel,
-                'bantuan_uang' => $uangBatuan,
-                'bantuan_kaos' => $kaosBatuan,
-                'bantuan_stiker' => $stikerBatuan,
-                'bantuan_beras' => $berasBatuan,
-                'bantuan_spanduk' => $spandukBatuan,
-                'bantuan_kerudung' => $kerudungBatuan,
+                'bantuan_uang' => $uangBantuan,
+                'bantuan_kaos' => $kaosBantuan,
+                'bantuan_stiker' => $stikerBantuan,
+                'bantuan_beras' => $berasBantuan,
+                'bantuan_spanduk' => $spandukBantuan,
+                'bantuan_kerudung' => $kerudungBantuan,
             ];
         }
     
@@ -61,7 +61,7 @@ class BantuanRelawanController extends Controller
         ]);
     }
 
-    public function infoJumlahJenisBantuan()
+    public function infoJumlahSasaranBantuan()
     {
         // Ambil semua data relawan
         $dataRelawan = relawan::get();
