@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Imports\ImportPemukaAgama;
 use App\Models\pemuka_agama;
-use App\Models\Relawan;
+use App\Models\relawan;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
@@ -14,7 +14,7 @@ class PemukaAgamaController extends Controller
 {
     public function listPemukaAgama($id)
     {
-        $relawan = Relawan::find($id);
+        $relawan = relawan::find($id);
         $dataPemukaAgama = pemuka_agama::where('relawan_id', $id)->get();
 
         return response()->json([

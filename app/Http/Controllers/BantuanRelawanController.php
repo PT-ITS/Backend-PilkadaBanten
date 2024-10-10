@@ -106,7 +106,7 @@ class BantuanRelawanController extends Controller
     public function exportAllBantuanRelawan()
     {
         // Fetch relawan data with related bantuan_relawans
-        $relawans = Relawan::with('bantuanRelawans')->get();
+        $relawans = relawan::with('bantuanRelawans')->get();
 
         return Excel::download(new BantuanRelawanExport($relawans), 'data_bantuan_relawan_export.xlsx');
     }
@@ -114,7 +114,7 @@ class BantuanRelawanController extends Controller
     public function exportBantuanRelawanByRelawan($id)
     {
         // Fetch relawan data with related bantuan_relawans
-        $relawans = Relawan::with('bantuanRelawans')
+        $relawans = relawan::with('bantuanRelawans')
             ->where('relawans.id', $id)
             ->get();
 
