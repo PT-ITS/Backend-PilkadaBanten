@@ -4,6 +4,8 @@ use App\Http\Controllers\FnbController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DataWargaController;
+use App\Http\Controllers\DataDptController;
 use App\Http\Controllers\PemilihController;
 use App\Http\Controllers\BantuanMasyarakatController;
 use App\Http\Controllers\BantuanPemilihController;
@@ -36,6 +38,28 @@ Route::group([
         });
     });
 });
+
+
+Route::prefix('warga')->group(function () {
+    Route::post('/import', [DataWargaController::class, 'importDataWarga']); 
+    Route::get('/', [DataWargaController::class, 'index']);          // Get all data warga
+    Route::post('/', [DataWargaController::class, 'store']);         // Create new warga
+    Route::get('/{id}', [DataWargaController::class, 'show']);       // Get specific warga by ID
+    Route::put('/{id}', [DataWargaController::class, 'update']);     // Update warga by ID
+    Route::delete('/{id}', [DataWargaController::class, 'destroy']); // Delete warga by ID
+});
+
+Route::prefix('dpt')->group(function () {
+    Route::post('/import', [DataDptController::class, 'importDataDpt']);
+    Route::get('/', [DataDptController::class, 'index']);          // Get all data DPT
+    Route::post('/', [DataDptController::class, 'store']);         // Create new DPT
+    Route::get('/{id}', [DataDptController::class, 'show']);       // Get specific DPT by ID
+    Route::put('/{id}', [DataDptController::class, 'update']);     // Update DPT by ID
+    Route::delete('/{id}', [DataDptController::class, 'destroy']); // Delete DPT by ID
+});
+
+
+
 
 // Dashboard
 Route::group([

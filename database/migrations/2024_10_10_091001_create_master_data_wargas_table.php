@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMasterDataDptsTable extends Migration
+class CreateMasterDataWargasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateMasterDataDptsTable extends Migration
      */
     public function up()
     {
-        Schema::create('master_data_dpts', function (Blueprint $table) {
+        Schema::create('master_data_wargas', function (Blueprint $table) {
             $table->id();
             $table->string('nik');
             $table->string('nama');
@@ -31,6 +31,6 @@ class CreateMasterDataDptsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('master_data_dpts');
+        Schema::dropIfExists('master_data_wargas');
     }
 }
