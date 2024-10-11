@@ -19,6 +19,8 @@ class CreateMasterDataDptsTable extends Migration
             $table->string('nama');
             $table->string('jenis_kelamin');
             $table->string('alamat');
+            $table->string('id_kabupaten');
+            $table->string('id_kecamatan');
             $table->string('id_kelurahan');
             $table->timestamps();
         });
