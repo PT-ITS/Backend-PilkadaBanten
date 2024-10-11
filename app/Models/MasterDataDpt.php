@@ -5,24 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class data_pemilih extends Model
+class MasterDataDpt extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'nik',
         'nama',
+        'jenis_kelamin',
         'alamat',
-        'kota',
-        'kec',
-        'desa_kel',
-        'rt_rw',
-        'tps',
-        'relawan_id'
+        'id_kabupaten',
+        'id_kecamatan',
+        'id_kelurahan',
     ];
-
-    public function relawan()
-    {
-        return $this->belongsTo(relawan::class);
-    }
 }

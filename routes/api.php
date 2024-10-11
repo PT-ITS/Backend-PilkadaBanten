@@ -4,6 +4,12 @@ use App\Http\Controllers\FnbController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AnalisaController;
+use App\Http\Controllers\DataWargaController;
+use App\Http\Controllers\DataDptController;
+use App\Http\Controllers\LokasiController;
+
+// usang
 use App\Http\Controllers\PemilihController;
 use App\Http\Controllers\BantuanMasyarakatController;
 use App\Http\Controllers\BantuanPemilihController;
@@ -37,6 +43,47 @@ Route::group([
     });
 });
 
+
+Route::prefix('lokasi')->group(function () {
+    Route::get('/kabupaten', [LokasiController::class, 'listKabupaten']);
+    Route::get('/kecamatan/{id}', [LokasiController::class, 'listKecamatan']);
+    Route::get('/kelurahan/{id}', [LokasiController::class, 'listKelurahan']);
+});
+
+Route::prefix('analisa')->group(function () {
+    Route::get('/list-kabupaten', [AnalisaController::class, 'listKabupaten']);
+    Route::get('/list-kecamatan/{id}', [AnalisaController::class, 'listKecamatanByKabupaten']);
+    Route::get('/list-kelurahan/{id}', [AnalisaController::class, 'listKelurahanByKecamatan']);
+});
+
+Route::group([
+    'prefix' => 'warga'
+], function () {
+    Route::group([
+        'middleware' => 'auth:api'
+    ], function () {
+        Route::post('/import', [DataWargaController::class, 'importDataWarga']);
+        Route::get('/list', [DataWargaController::class, 'listDataWarga']);          // Get all data warga
+        Route::get('/list/(id)', [DataWargaController::class, 'listDataWargaByPj']);          // Get all data warga
+        Route::post('/', [DataWargaController::class, 'store']);         // Create new warga
+        Route::get('/{id}', [DataWargaController::class, 'show']);       // Get specific warga by ID
+        Route::put('/{id}', [DataWargaController::class, 'update']);     // Update warga by ID
+        Route::delete('/{id}', [DataWargaController::class, 'destroy']); // Delete warga by ID
+    });
+});
+
+Route::prefix('dpt')->group(function () {
+    Route::post('/import', [DataDptController::class, 'importDataDpt']);
+    Route::get('/', [DataDptController::class, 'index']);          // Get all data DPT
+    Route::post('/', [DataDptController::class, 'store']);         // Create new DPT
+    Route::get('/{id}', [DataDptController::class, 'show']);       // Get specific DPT by ID
+    Route::put('/{id}', [DataDptController::class, 'update']);     // Update DPT by ID
+    Route::delete('/{id}', [DataDptController::class, 'destroy']); // Delete DPT by ID
+});
+
+
+
+
 // Dashboard
 Route::group([
     'prefix' => 'dashboard'
@@ -44,11 +91,12 @@ Route::group([
     // Route::group([
     //     'middleware' => 'auth:api'
     // ], function () {
-    Route::get('/br-available-years', [DashboardController::class, 'getBantuanRelawanAvailableYears']);
-    Route::get('/br-list-line-by-sasaran', [DashboardController::class, 'listLineChartDataBantuanRelawanBySasaran']);
-    Route::get('/br-list-line-by-jenis-bantuan', [DashboardController::class, 'listLineChartDataBantuanRelawanByJenisBantuan']);
-    Route::get('/br-list-pie-by-sasaran', [DashboardController::class, 'listPieChartDataBantuanRelawanBySasaran']);
-    Route::get('/br-list-pie-by-jenis-bantuan', [DashboardController::class, 'listPieChartDataBantuanRelawanByJenisBantuan']);
+    // Route::get('/br-available-years', [DashboardController::class, 'getBantuanRelawanAvailableYears']);
+    Route::get('/bar-chart-by-kabupaten', [DashboardController::class, 'listBarChartByKabupaten']);
+    // Route::get('/br-list-line-by-sasaran', [DashboardController::class, 'listLineChartDataBantuanRelawanBySasaran']);
+    // Route::get('/br-list-line-by-jenis-bantuan', [DashboardController::class, 'listLineChartDataBantuanRelawanByJenisBantuan']);
+    // Route::get('/br-list-pie-by-sasaran', [DashboardController::class, 'listPieChartDataBantuanRelawanBySasaran']);
+    // Route::get('/br-list-pie-by-jenis-bantuan', [DashboardController::class, 'listPieChartDataBantuanRelawanByJenisBantuan']);
     // });
 });
 
