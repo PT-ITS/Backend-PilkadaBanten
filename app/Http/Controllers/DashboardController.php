@@ -12,32 +12,6 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function getDataDptAvailableYears()
-    {
-        $years = MasterDataDpt::selectRaw('YEAR(created_at) as year')
-            ->groupBy('year')
-            ->orderBy('year', 'desc')
-            ->pluck('year')
-            ->filter(function ($year) {
-                return !is_null($year);
-            });
-
-        return response()->json(['message' => 'success', 'data' => $years]);
-    }
-
-    public function getDataWargaAvailableYears()
-    {
-        $years = MasterDataWarga::selectRaw('YEAR(created_at) as year')
-            ->groupBy('year')
-            ->orderBy('year', 'desc')
-            ->pluck('year')
-            ->filter(function ($year) {
-                return !is_null($year);
-            });
-
-        return response()->json(['message' => 'success', 'data' => $years]);
-    }
-
     // public function getBantuanRelawanAvailableYears()
     // {
     //     $years = bantuan_relawan::selectRaw('YEAR(tanggal) as year')
@@ -90,31 +64,50 @@ class DashboardController extends Controller
     //     return response()->json(['message' => 'success', 'data' => $years]);
     // }
 
-    public function listLineChartDataDptByKabupaten(Request $request)
+    public function listBarChartByKabupaten()
     {
-        $year = $request->input('year', date('Y'));
-
-        $data = MasterDataDpt::selectRaw('MONTH(created_at) as month, id_kabupaten, COUNT(*) as count')
-            ->whereYear('created_at', $year)
-            ->groupBy('month', 'id_kabupaten')
-            ->orderBy('month')
+        $dptData = MasterDataDpt::selectRaw('id_kabupaten, COUNT(*) as count')
+            ->groupBy('id_kabupaten')
             ->get();
 
-        return response()->json(['message' => 'success', 'data' => $data]);
-    }
-
-    public function listLineChartDataWargaByKabupaten(Request $request)
-    {
-        $year = $request->input('year', date('Y'));
-
-        $data = MasterDataWarga::selectRaw('MONTH(created_at) as month, id_kabupaten, COUNT(*) as count')
-            ->whereYear('created_at', $year)
-            ->groupBy('month', 'id_kabupaten')
-            ->orderBy('month')
+        $wargaData = MasterDataWarga::selectRaw('id_kabupaten, COUNT(*) as count')
+            ->groupBy('id_kabupaten')
             ->get();
 
-        return response()->json(['message' => 'success', 'data' => $data]);
+        return response()->json([
+            'message' => 'success',
+            'data' => [
+                'dpt' => $dptData,
+                'warga' => $wargaData,
+            ]
+        ]);
     }
+
+    // public function listLineChartDataDptByKabupaten(Request $request)
+    // {
+    //     $year = $request->input('year', date('Y'));
+
+    //     $data = MasterDataDpt::selectRaw('MONTH(created_at) as month, id_kabupaten, COUNT(*) as count')
+    //         ->whereYear('created_at', $year)
+    //         ->groupBy('month', 'id_kabupaten')
+    //         ->orderBy('month')
+    //         ->get();
+
+    //     return response()->json(['message' => 'success', 'data' => $data]);
+    // }
+
+    // public function listLineChartDataWargaByKabupaten(Request $request)
+    // {
+    //     $year = $request->input('year', date('Y'));
+
+    //     $data = MasterDataWarga::selectRaw('MONTH(created_at) as month, id_kabupaten, COUNT(*) as count')
+    //         ->whereYear('created_at', $year)
+    //         ->groupBy('month', 'id_kabupaten')
+    //         ->orderBy('month')
+    //         ->get();
+
+    //     return response()->json(['message' => 'success', 'data' => $data]);
+    // }
 
     // public function listLineChartDataBantuanRelawanBySasaran(Request $request)
     // {
