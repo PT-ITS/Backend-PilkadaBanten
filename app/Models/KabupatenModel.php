@@ -5,17 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MasterDataDpt extends Model
+class KabupatenModel extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'nik',
-        'nama',
-        'jenis_kelamin',
-        'alamat',
-        'id_kabupaten',
-        'id_kecamatan',
-        'id_kelurahan',
+        "provinsi_id",
+        "name",
+        "id_jenis",
     ];
 }

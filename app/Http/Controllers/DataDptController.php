@@ -20,8 +20,9 @@ class DataDptController extends Controller
             'nama' => 'required',
             'jenis_kelamin' => 'required',
             'alamat' => 'required',
+            'id_kabupaten' => 'required',
+            'id_kecamatan' => 'required',
             'id_kelurahan' => 'required',
-
         ]);
 
         if ($validator->fails()) {
@@ -35,7 +36,10 @@ class DataDptController extends Controller
             $newDataDpt->nama = $request->nama;
             $newDataDpt->jenis_kelamin = $request->jenis_kelamin;
             $newDataDpt->alamat = $request->alamat;
+            $newDataDpt->id_kabupaten = $request->id_kabupaten;
+            $newDataDpt->id_kecamatan = $request->id_kecamatan;
             $newDataDpt->id_kelurahan = $request->id_kelurahan;
+            
             $newDataDpt->save();
 
             // Import Pemilih data from Excel file
@@ -60,7 +64,10 @@ class DataDptController extends Controller
                             'nama' => $data['nama'],
                             'jenis_kelamin' => $data['jenis_kelamin'],
                             'alamat' => $data['alamat'],
+                            'id_kabupaten' => $data['id_kabupaten'],
+                            'id_kecamatan' => $data['id_kecamatan'],
                             'id_kelurahan' => $data['id_kelurahan'],
+                            
                         ]);
                         $wargaDpt->save();
                         $successDataCount++; // Increment success count
