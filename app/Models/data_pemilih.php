@@ -23,6 +23,6 @@ class data_pemilih extends Model
 
     public function relawan()
     {
-        return $this->belongsTo(Relawan::class);
+        return $this->belongsTo(relawan::class);
     }
 }

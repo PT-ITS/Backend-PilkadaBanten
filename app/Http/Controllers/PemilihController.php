@@ -14,7 +14,7 @@ class PemilihController extends Controller
 {
     public function listRelawan()
     {
-        $dataRelawan = Relawan::get();
+        $dataRelawan = relawan::get();
 
         return response()->json(['id' => '1', 'data' => $dataRelawan]);
     }
@@ -22,7 +22,7 @@ class PemilihController extends Controller
     public function listPemilihByRelawan($id)
     {
         // Ambil data relawan berdasarkan id
-        $relawan = Relawan::find($id);
+        $relawan = relawan::find($id);
 
         // Cek apakah data relawan ditemukan
         if ($relawan) {
@@ -225,7 +225,7 @@ class PemilihController extends Controller
 
         DB::beginTransaction();
         try {
-            $dataRelawan = Relawan::find($id);
+            $dataRelawan = relawan::find($id);
             $dataRelawan->nik = $validateData['nik'];
             $dataRelawan->nama = $validateData['nama'];
             $dataRelawan->alamat = $validateData['alamat'];
@@ -261,7 +261,7 @@ class PemilihController extends Controller
 
     public function deleteRelawan($id)
     {
-        $dataRelawan = Relawan::find($id);
+        $dataRelawan = relawan::find($id);
 
         if ($dataRelawan) {
             $dataRelawan->delete();

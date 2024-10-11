@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Imports\ImportRt;
-use App\Models\Relawan;
+use App\Models\relawan;
 use App\Models\data_rt;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -14,7 +14,7 @@ class RtController extends Controller
 {
     public function listRt($id)
     {
-        $relawan = Relawan::find($id);
+        $relawan = relawan::find($id);
         $dataRt = data_rt::where('relawan_id', $id)->get();
 
         return response()->json([
