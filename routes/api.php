@@ -53,6 +53,7 @@ Route::prefix('lokasi')->group(function () {
 Route::prefix('analisa')->group(function () {
     Route::get('/list-kabupaten', [AnalisaController::class, 'listKabupaten']);
     Route::get('/list-kecamatan/{id}', [AnalisaController::class, 'listKecamatanByKabupaten']);
+    Route::get('/list-kelurahan/{id}', [AnalisaController::class, 'listKelurahanByKecamatan']);
 });
 
 Route::group([

@@ -73,8 +73,30 @@ class AnalisaController extends Controller
         ]);
     }
 
-    public function listKecamatan($id)
-    {}
+    public function listKelurahanByKecamatan($id)
+    {
+        // Ambil semua kelurahan berdasarkan kecamatan_id
+        $listKelurahan = MasterKelurahan::where('kecamatan_id', $id)->get();
+    
+        // Siapkan array untuk menampung hasil
+        $kelurahanData = [];
+    
+        // Looping melalui kelurahan
+        foreach ($listKelurahan as $kelurahan) {
+            // Tambahkan data kelurahan ke array
+            $kelurahanData[] = [
+                'id' => $kelurahan->id,
+                'nama' => $kelurahan->name,
+            ];
+        }
+    
+        // Kembalikan response JSON
+        return response()->json([
+            'id' => '1',
+            'data' => $kelurahanData
+        ]);
+    }
+    
 
     public function listKelurahan($id)
     {}
