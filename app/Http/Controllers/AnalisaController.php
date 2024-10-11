@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\MasterKabupaten;
 use App\Models\MasterKecamatan;
 use App\Models\MasterKelurahan;
+use App\Models\MasterDataWarga;
 
 class AnalisaController extends Controller
 {
@@ -20,6 +21,16 @@ class AnalisaController extends Controller
         foreach ($listKabupaten as $kabupaten) {
             // Ambil kecamatan berdasarkan kabupaten_id
             $listKecamatan = MasterKecamatan::where('kabupaten_id', $kabupaten->id)->get();
+            $totalWarga = MasterDataWarga::where('id_kabupaten', $kabupaten->id)->count();
+
+        // Menghitung jumlah warga berdasarkan jenis kelamin
+        $jumlahPria = MasterDataWarga::where('id_kabupaten', $kabupaten->id)
+                                        ->where('jenis_kelamin', 'L')
+                                        ->count();
+
+        $jumlahWanita = MasterDataWarga::where('id_kabupaten', $kabupaten->id)
+                                        ->where('jenis_kelamin', 'P')
+                                        ->count();
             
             // Hitung jumlah kelurahan di setiap kecamatan
             $jumlahKelurahan = 0;
@@ -34,7 +45,10 @@ class AnalisaController extends Controller
                 'kabupaten_id' => $kabupaten->id,
                 'name' => $kabupaten->name,
                 'jumlah_kecamatan' => $listKecamatan->count(),
-                'jumlah_kelurahan' => $jumlahKelurahan
+                'jumlah_kelurahan' => $jumlahKelurahan,
+                'total_warga' => $totalWarga,
+                'jumlah_pria' => $jumlahPria,
+                'jumlah_wanita' => $jumlahWanita,
             ];
         }
 
