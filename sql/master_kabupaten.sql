@@ -24,10 +24,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `master_kabupaten`
+-- Table structure for table `master_kabupatens`
 --
 
-CREATE TABLE `master_kabupaten` (
+CREATE TABLE `master_kabupatens` (
   `id` char(4) NOT NULL,
   `provinsi_id` char(2) NOT NULL,
   `name` tinytext NOT NULL,
@@ -35,10 +35,10 @@ CREATE TABLE `master_kabupaten` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
--- Dumping data for table `master_kabupaten`
+-- Dumping data for table `master_kabupatens`
 --
 
-INSERT INTO `master_kabupaten` (`id`, `provinsi_id`, `name`, `id_jenis`) VALUES
+INSERT INTO `master_kabupatens` (`id`, `provinsi_id`, `name`, `id_jenis`) VALUES
 ('3601', '36', 'KAB. PANDEGLANG', 1),
 ('3602', '36', 'KAB. LEBAK', 1),
 ('3603', '36', 'KAB. TANGERANG', 1),
@@ -53,9 +53,9 @@ INSERT INTO `master_kabupaten` (`id`, `provinsi_id`, `name`, `id_jenis`) VALUES
 --
 
 --
--- Indexes for table `master_kabupaten`
+-- Indexes for table `master_kabupatens`
 --
-ALTER TABLE `master_kabupaten`
+ALTER TABLE `master_kabupatens`
   ADD PRIMARY KEY (`id`);
 COMMIT;
 

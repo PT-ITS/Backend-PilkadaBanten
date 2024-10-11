@@ -24,20 +24,20 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `master_kecamatan`
+-- Table structure for table `master_kecamatans`
 --
 
-CREATE TABLE `master_kecamatan` (
+CREATE TABLE `master_kecamatans` (
   `id` char(6) NOT NULL,
   `kabupaten_id` char(4) NOT NULL,
   `name` tinytext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
--- Dumping data for table `master_kecamatan`
+-- Dumping data for table `master_kecamatans`
 --
 
-INSERT INTO `master_kecamatan` (`id`, `kabupaten_id`, `name`) VALUES
+INSERT INTO `master_kecamatans` (`id`, `kabupaten_id`, `name`) VALUES
 ('360101', '3601', 'SUMUR'),
 ('360102', '3601', 'CIMANGGU'),
 ('360103', '3601', 'CIBALIUNG'),
@@ -199,9 +199,9 @@ INSERT INTO `master_kecamatan` (`id`, `kabupaten_id`, `name`) VALUES
 --
 
 --
--- Indexes for table `master_kecamatan`
+-- Indexes for table `master_kecamatans`
 --
-ALTER TABLE `master_kecamatan`
+ALTER TABLE `master_kecamatans`
   ADD PRIMARY KEY (`id`);
 COMMIT;
 

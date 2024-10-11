@@ -24,10 +24,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `master_kelurahan`
+-- Table structure for table `master_kelurahans`
 --
 
-CREATE TABLE `master_kelurahan` (
+CREATE TABLE `master_kelurahans` (
   `id` char(10) NOT NULL,
   `kecamatan_id` char(6) DEFAULT NULL,
   `name` tinytext DEFAULT NULL,
@@ -35,10 +35,10 @@ CREATE TABLE `master_kelurahan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
--- Dumping data for table `master_kelurahan`
+-- Dumping data for table `master_kelurahans`
 --
 
-INSERT INTO `master_kelurahan` (`id`, `kecamatan_id`, `name`, `id_jenis`) VALUES
+INSERT INTO `master_kelurahans` (`id`, `kecamatan_id`, `name`, `id_jenis`) VALUES
 ('3601012001', '360101', 'SUMBERJAYA', 4),
 ('3601012002', '360101', 'KERTAJAYA', 4),
 ('3601012003', '360101', 'KERTAMUKTI', 4),
@@ -1283,7 +1283,7 @@ INSERT INTO `master_kelurahan` (`id`, `kecamatan_id`, `name`, `id_jenis`) VALUES
 ('3604312011', '360431', 'KAMASAN', 4),
 ('3604312012', '360431', 'BANTAR WANGI', 4),
 ('3604312013', '360431', 'MEKARSARI', 4);
-INSERT INTO `master_kelurahan` (`id`, `kecamatan_id`, `name`, `id_jenis`) VALUES
+INSERT INTO `master_kelurahans` (`id`, `kecamatan_id`, `name`, `id_jenis`) VALUES
 ('3604312014', '360431', 'BAROS JAYA', 4),
 ('3604322001', '360432', 'MANCAK', 4),
 ('3604322002', '360432', 'CIWARNA', 4),
@@ -1597,9 +1597,9 @@ INSERT INTO `master_kelurahan` (`id`, `kecamatan_id`, `name`, `id_jenis`) VALUES
 --
 
 --
--- Indexes for table `master_kelurahan`
+-- Indexes for table `master_kelurahans`
 --
-ALTER TABLE `master_kelurahan`
+ALTER TABLE `master_kelurahans`
   ADD PRIMARY KEY (`id`);
 COMMIT;
 

@@ -4,8 +4,12 @@ use App\Http\Controllers\FnbController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AnalisaController;
 use App\Http\Controllers\DataWargaController;
 use App\Http\Controllers\DataDptController;
+use App\Http\Controllers\LokasiController;
+
+// usang
 use App\Http\Controllers\PemilihController;
 use App\Http\Controllers\BantuanMasyarakatController;
 use App\Http\Controllers\BantuanPemilihController;
@@ -39,6 +43,17 @@ Route::group([
     });
 });
 
+
+Route::prefix('lokasi')->group(function () {
+    Route::get('/kabupaten', [LokasiController::class, 'listKabupaten']); 
+    Route::get('/kecamatan', [LokasiController::class, 'listKecamatan']); 
+    Route::get('/kelurahan', [LokasiController::class, 'listKelurahan']); 
+});
+
+Route::prefix('analisa')->group(function () {
+    Route::get('/list-kabupaten', [AnalisaController::class, 'listKabupaten']); 
+    Route::get('/list-kecamatan/{id}', [AnalisaController::class, 'listKecamatanByKabupaten']); 
+});
 
 Route::prefix('warga')->group(function () {
     Route::post('/import', [DataWargaController::class, 'importDataWarga']); 
