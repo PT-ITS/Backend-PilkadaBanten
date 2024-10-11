@@ -17,7 +17,7 @@ class CreateMasterDataDptsTable extends Migration
             $table->id();
             $table->string('nik');
             $table->string('nama');
-            $table->string('jenis_kelamin');
+            $table->enum('jenis_kelamin', ['L', 'P']);
             $table->string('alamat');
             $table->string('id_kabupaten');
             $table->string('id_kecamatan');

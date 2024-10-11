@@ -20,9 +20,9 @@ class LokasiController extends Controller
         ]);
     }
 
-    public function listKecamatan()
+    public function listKecamatan($id)
     {
-        $dataKecamatan = MasterKecamatan::get();
+        $dataKecamatan = MasterKecamatan::where('kabupaten_id', $id)->get();
 
         return response()->json([
             'id' => '1',
@@ -30,9 +30,9 @@ class LokasiController extends Controller
         ]);
     }
 
-    public function listKelurahan()
+    public function listKelurahan($id)
     {
-        $dataKelurahan = MasterKelurahan::get();
+        $dataKelurahan = MasterKelurahan::where('kecamatan_id', $id)->get();
 
         return response()->json([
             'id' => '1',

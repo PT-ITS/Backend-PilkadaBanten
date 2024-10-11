@@ -16,10 +16,12 @@ class DataWargaController extends Controller
         // Validate the incoming request, including the Excel file and MasterDataWarga data
         $validator = Validator::make($request->all(), [
             'file' => 'required|mimes:xlsx,xls',
-            'nik' => 'required',
-            'nama' => 'required',
-            'jenis_kelamin' => 'required',
-            'alamat' => 'required',
+            // 'nik' => 'required',
+            // 'nama' => 'required',
+            // 'jenis_kelamin' => 'required',
+            // 'alamat' => 'required',
+            'id_kabupaten' => 'required',
+            'id_kecamatan' => 'required',
             'id_kelurahan' => 'required',
 
         ]);
@@ -30,16 +32,16 @@ class DataWargaController extends Controller
 
         try {
             // Create new MasterDataWarga data
-            $dataWarga = new MasterDataWarga();
-            $dataWarga->nik = $request->nik;
-            $dataWarga->nama = $request->nama;
-            $dataWarga->jenis_kelamin = $request->jenis_kelamin;
-            $dataWarga->alamat = $request->alamat;
-            $dataWarga->id_kelurahan = $request->id_kelurahan;
-            $dataWarga->save();
+            // $dataWarga = new MasterDataWarga();
+            // $dataWarga->nik = $request->nik;
+            // $dataWarga->nama = $request->nama;
+            // $dataWarga->jenis_kelamin = $request->jenis_kelamin;
+            // $dataWarga->alamat = $request->alamat;
+            // $dataWarga->id_kelurahan = $request->id_kelurahan;
+            // $dataWarga->save();
 
             // Import Pemilih data from Excel file
-            $importedDataWarga = Excel::toArray(new ImportPemilih, $request->file('file'))[0];
+            $importedDataWarga = Excel::toArray(new ImportDataWarga, $request->file('file'))[0];
 
             // Initialize counters for success and failure tracking
             $successDataCount = 0;
@@ -60,7 +62,10 @@ class DataWargaController extends Controller
                             'nama' => $data['nama'],
                             'jenis_kelamin' => $data['jenis_kelamin'],
                             'alamat' => $data['alamat'],
-                            'id_kelurahan' => $data['id_kelurahan'],
+                            'id_kabupaten' => $request->id_kabupaten,
+                            'id_kecamatan' => $request->id_kecamatan,
+                            'id_kelurahan' => $request->id_kelurahan,
+                            'pj_id' => auth()->user()->id,
                         ]);
                         $wargaData->save();
                         $successDataCount++; // Increment success count
@@ -92,9 +97,27 @@ class DataWargaController extends Controller
     }
 
     // GET: Fetch all data warga
-    public function index()
+    public function listDataWarga()
     {
-        $dataWarga = MasterDataWarga::all();
+        $dataWarga = MasterDataWarga::join('master_kabupatens', 'master_data_wargas.id_kabupaten', '=', 'master_kabupatens.id')
+            ->join('master_kecamatans', 'master_data_wargas.id_kecamatan', '=', 'master_kecamatans.id')
+            ->join('master_kelurahans', 'master_data_wargas.id_kelurahan', '=', 'master_kelurahans.id')
+            ->select('master_data_wargas.*', 'master_kabupatens.name AS nama_kabupaten', 'master_kecamatans.name AS nama_kecamatan', 'master_kelurahans.name AS nama_kelurahan')
+            ->get();
+        return response()->json([
+            'status' => 'success',
+            'data' => $dataWarga
+        ]);
+    }
+
+    public function listDataWargaByPj($id)
+    {
+        $dataWarga = MasterDataWarga::join('master_kabupatens', 'master_data_wargas.id_kabupaten', '=', 'master_kabupatens.id')
+            ->join('master_kecamatans', 'master_data_wargas.id_kecamatan', '=', 'master_kecamatans.id')
+            ->join('master_kelurahans', 'master_data_wargas.id_kelurahan', '=', 'master_kelurahans.id')
+            ->select('master_data_wargas.*', 'master_kabupatens.name AS nama_kabupaten', 'master_kecamatans.name AS nama_kecamatan', 'master_kelurahans.name AS nama_kelurahan')
+            ->where('pj_id', $id)
+            ->get();
         return response()->json([
             'status' => 'success',
             'data' => $dataWarga

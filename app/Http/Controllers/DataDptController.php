@@ -16,10 +16,10 @@ class DataDptController extends Controller
         // Validate the incoming request, including the Excel file and MasterDataDpt data
         $validator = Validator::make($request->all(), [
             'file' => 'required|mimes:xlsx,xls',
-            'nik' => 'required',
-            'nama' => 'required',
-            'jenis_kelamin' => 'required',
-            'alamat' => 'required',
+            // 'nik' => 'required',
+            // 'nama' => 'required',
+            // 'jenis_kelamin' => 'required',
+            // 'alamat' => 'required',
             'id_kabupaten' => 'required',
             'id_kecamatan' => 'required',
             'id_kelurahan' => 'required',
@@ -31,16 +31,16 @@ class DataDptController extends Controller
 
         try {
             // Create new MasterDataDpt data
-            $newDataDpt = new MasterDataDpt();
-            $newDataDpt->nik = $request->nik;
-            $newDataDpt->nama = $request->nama;
-            $newDataDpt->jenis_kelamin = $request->jenis_kelamin;
-            $newDataDpt->alamat = $request->alamat;
-            $newDataDpt->id_kabupaten = $request->id_kabupaten;
-            $newDataDpt->id_kecamatan = $request->id_kecamatan;
-            $newDataDpt->id_kelurahan = $request->id_kelurahan;
-            
-            $newDataDpt->save();
+            // $newDataDpt = new MasterDataDpt();
+            // $newDataDpt->nik = $request->nik;
+            // $newDataDpt->nama = $request->nama;
+            // $newDataDpt->jenis_kelamin = $request->jenis_kelamin;
+            // $newDataDpt->alamat = $request->alamat;
+            // $newDataDpt->id_kabupaten = $request->id_kabupaten;
+            // $newDataDpt->id_kecamatan = $request->id_kecamatan;
+            // $newDataDpt->id_kelurahan = $request->id_kelurahan;
+
+            // $newDataDpt->save();
 
             // Import Pemilih data from Excel file
             $importedDataDpt = Excel::toArray(new importDataDpt, $request->file('file'))[0];
@@ -67,7 +67,7 @@ class DataDptController extends Controller
                             'id_kabupaten' => $data['id_kabupaten'],
                             'id_kecamatan' => $data['id_kecamatan'],
                             'id_kelurahan' => $data['id_kelurahan'],
-                            
+
                         ]);
                         $wargaDpt->save();
                         $successDataCount++; // Increment success count

@@ -20,7 +20,6 @@ class ImportDataWarga implements ToModel, WithHeadingRow
             'nama' => $row['nama'],
             'jenis_kelamin' => $row['jenis_kelamin'],
             'alamat' => $row['alamat'],
-            'id_kelurahan' => $row['id_kelurahan'],
         ]);
     }
 }

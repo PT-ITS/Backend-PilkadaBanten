@@ -45,23 +45,30 @@ Route::group([
 
 
 Route::prefix('lokasi')->group(function () {
-    Route::get('/kabupaten', [LokasiController::class, 'listKabupaten']); 
-    Route::get('/kecamatan', [LokasiController::class, 'listKecamatan']); 
-    Route::get('/kelurahan', [LokasiController::class, 'listKelurahan']); 
+    Route::get('/kabupaten', [LokasiController::class, 'listKabupaten']);
+    Route::get('/kecamatan/{id}', [LokasiController::class, 'listKecamatan']);
+    Route::get('/kelurahan/{id}', [LokasiController::class, 'listKelurahan']);
 });
 
 Route::prefix('analisa')->group(function () {
-    Route::get('/list-kabupaten', [AnalisaController::class, 'listKabupaten']); 
-    Route::get('/list-kecamatan/{id}', [AnalisaController::class, 'listKecamatanByKabupaten']); 
+    Route::get('/list-kabupaten', [AnalisaController::class, 'listKabupaten']);
+    Route::get('/list-kecamatan/{id}', [AnalisaController::class, 'listKecamatanByKabupaten']);
 });
 
-Route::prefix('warga')->group(function () {
-    Route::post('/import', [DataWargaController::class, 'importDataWarga']); 
-    Route::get('/', [DataWargaController::class, 'index']);          // Get all data warga
-    Route::post('/', [DataWargaController::class, 'store']);         // Create new warga
-    Route::get('/{id}', [DataWargaController::class, 'show']);       // Get specific warga by ID
-    Route::put('/{id}', [DataWargaController::class, 'update']);     // Update warga by ID
-    Route::delete('/{id}', [DataWargaController::class, 'destroy']); // Delete warga by ID
+Route::group([
+    'prefix' => 'warga'
+], function () {
+    Route::group([
+        'middleware' => 'auth:api'
+    ], function () {
+        Route::post('/import', [DataWargaController::class, 'importDataWarga']);
+        Route::get('/list', [DataWargaController::class, 'listDataWarga']);          // Get all data warga
+        Route::get('/list/(id)', [DataWargaController::class, 'listDataWargaByPj']);          // Get all data warga
+        Route::post('/', [DataWargaController::class, 'store']);         // Create new warga
+        Route::get('/{id}', [DataWargaController::class, 'show']);       // Get specific warga by ID
+        Route::put('/{id}', [DataWargaController::class, 'update']);     // Update warga by ID
+        Route::delete('/{id}', [DataWargaController::class, 'destroy']); // Delete warga by ID
+    });
 });
 
 Route::prefix('dpt')->group(function () {
