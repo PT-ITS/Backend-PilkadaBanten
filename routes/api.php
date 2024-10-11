@@ -91,11 +91,12 @@ Route::group([
     // Route::group([
     //     'middleware' => 'auth:api'
     // ], function () {
-    Route::get('/br-available-years', [DashboardController::class, 'getBantuanRelawanAvailableYears']);
-    Route::get('/br-list-line-by-sasaran', [DashboardController::class, 'listLineChartDataBantuanRelawanBySasaran']);
-    Route::get('/br-list-line-by-jenis-bantuan', [DashboardController::class, 'listLineChartDataBantuanRelawanByJenisBantuan']);
-    Route::get('/br-list-pie-by-sasaran', [DashboardController::class, 'listPieChartDataBantuanRelawanBySasaran']);
-    Route::get('/br-list-pie-by-jenis-bantuan', [DashboardController::class, 'listPieChartDataBantuanRelawanByJenisBantuan']);
+    // Route::get('/br-available-years', [DashboardController::class, 'getBantuanRelawanAvailableYears']);
+    Route::get('/bar-chart-by-kabupaten', [DashboardController::class, 'listBarChartByKabupaten']);
+    // Route::get('/br-list-line-by-sasaran', [DashboardController::class, 'listLineChartDataBantuanRelawanBySasaran']);
+    // Route::get('/br-list-line-by-jenis-bantuan', [DashboardController::class, 'listLineChartDataBantuanRelawanByJenisBantuan']);
+    // Route::get('/br-list-pie-by-sasaran', [DashboardController::class, 'listPieChartDataBantuanRelawanBySasaran']);
+    // Route::get('/br-list-pie-by-jenis-bantuan', [DashboardController::class, 'listPieChartDataBantuanRelawanByJenisBantuan']);
     // });
 });
 

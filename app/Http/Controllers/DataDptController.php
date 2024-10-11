@@ -64,9 +64,9 @@ class DataDptController extends Controller
                             'nama' => $data['nama'],
                             'jenis_kelamin' => $data['jenis_kelamin'],
                             'alamat' => $data['alamat'],
-                            'id_kabupaten' => $data['id_kabupaten'],
-                            'id_kecamatan' => $data['id_kecamatan'],
-                            'id_kelurahan' => $data['id_kelurahan'],
+                            'id_kabupaten' => $request->id_kabupaten,
+                            'id_kecamatan' => $request->id_kecamatan,
+                            'id_kelurahan' => $request->id_kelurahan,
 
                         ]);
                         $wargaDpt->save();
@@ -101,7 +101,11 @@ class DataDptController extends Controller
     // GET: Fetch all data DPT
     public function index()
     {
-        $dataDpt = MasterDataDpt::all();
+        $dataDpt = MasterDataDpt::join('master_kabupatens', 'master_data_dpts.id_kabupaten', '=', 'master_kabupatens.id')
+            ->join('master_kecamatans', 'master_data_dpts.id_kecamatan', '=', 'master_kecamatans.id')
+            ->join('master_kelurahans', 'master_data_dpts.id_kelurahan', '=', 'master_kelurahans.id')
+            ->select('master_data_dpts.*', 'master_kabupatens.name AS nama_kabupaten', 'master_kecamatans.name AS nama_kecamatan', 'master_kelurahans.name AS nama_kelurahan')
+            ->get();
         return response()->json([
             'status' => 'success',
             'data' => $dataDpt
