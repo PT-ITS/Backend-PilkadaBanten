@@ -7,6 +7,8 @@ use App\Models\MasterKabupaten;
 use App\Models\MasterKecamatan;
 use App\Models\MasterKelurahan;
 use App\Models\MasterDataWarga;
+use App\Models\MasterDataDpt;
+
 
 class AnalisaController extends Controller
 {
@@ -21,6 +23,9 @@ class AnalisaController extends Controller
         foreach ($listKabupaten as $kabupaten) {
             // Ambil kecamatan berdasarkan kabupaten_id
             $listKecamatan = MasterKecamatan::where('kabupaten_id', $kabupaten->id)->get();
+
+            $totalDpt = MasterDataDpt::where('id_kabupaten', $kabupaten->id)->count();
+
             $totalWarga = MasterDataWarga::where('id_kabupaten', $kabupaten->id)->count();
 
         // Menghitung jumlah warga berdasarkan jenis kelamin
@@ -46,6 +51,7 @@ class AnalisaController extends Controller
                 'name' => $kabupaten->name,
                 'jumlah_kecamatan' => $listKecamatan->count(),
                 'jumlah_kelurahan' => $jumlahKelurahan,
+                'total_dpt' => $totalDpt,
                 'total_warga' => $totalWarga,
                 'jumlah_pria' => $jumlahPria,
                 'jumlah_wanita' => $jumlahWanita,
@@ -72,11 +78,28 @@ class AnalisaController extends Controller
             // Hitung jumlah kelurahan berdasarkan kecamatan_id
             $jumlahKelurahan = MasterKelurahan::where('kecamatan_id', $kecamatan->id)->count();
 
+            $totalDpt = MasterDataDpt::where('id_kecamatan', $kecamatan->id)->count();
+
+            $totalWarga = MasterDataWarga::where('id_kecamatan', $kecamatan->id)->count();
+
+        // Menghitung jumlah warga berdasarkan jenis kelamin
+        $jumlahPria = MasterDataWarga::where('id_kecamatan', $kecamatan->id)
+                                        ->where('jenis_kelamin', 'L')
+                                        ->count();
+
+        $jumlahWanita = MasterDataWarga::where('id_kecamatan', $kecamatan->id)
+                                        ->where('jenis_kelamin', 'P')
+                                        ->count();
+
             // Tambahkan data ke array
             $kecamatanData[] = [
                 'id' => $kecamatan->id,
                 'nama' => $kecamatan->name,
                 'jumlah_kelurahan' => $jumlahKelurahan,
+                'total_dpt' => $totalDpt,
+                'total_warga' => $totalWarga,
+                'jumlah_pria' => $jumlahPria,
+                'jumlah_wanita' => $jumlahWanita,
             ];
         }
 
