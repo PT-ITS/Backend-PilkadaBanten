@@ -13,4 +13,9 @@ class MasterKabupaten extends Model
         "provinsi_id",
         "name",
     ];
+
+    public function wargas()
+    {
+        return $this->hasMany(MasterDataWarga::class, 'id_kabupaten', 'id');
+    }
 }
