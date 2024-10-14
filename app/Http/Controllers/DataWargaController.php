@@ -19,7 +19,7 @@ class DataWargaController extends Controller
             // 'nik' => 'required',
             // 'nama' => 'required',
             // 'jenis_kelamin' => 'required',
-            // 'alamat' => 'required',
+            'kategori_warga' => 'required',
             'id_kabupaten' => 'required',
             'id_kecamatan' => 'required',
             'id_kelurahan' => 'required',
@@ -62,6 +62,7 @@ class DataWargaController extends Controller
                             'nama' => $data['nama'],
                             'jenis_kelamin' => $data['jenis_kelamin'],
                             'alamat' => $data['alamat'],
+                            'kategori_warga' => $request->kategori_warga,
                             'id_kabupaten' => $request->id_kabupaten,
                             'id_kecamatan' => $request->id_kecamatan,
                             'id_kelurahan' => $request->id_kelurahan,
@@ -94,6 +95,75 @@ class DataWargaController extends Controller
             // Return error response if the process fails
             return response()->json(['message' => 'An error occurred while importing data.', 'error' => $e->getMessage()], 500);
         }
+    }
+
+    public function importDataPenerimaBansos(Request $request)
+    {
+        // Validate the incoming request, including the Excel file and MasterDataWarga data
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|mimes:xlsx,xls',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Validation error', 'errors' => $validator->errors()], 422);
+        }
+
+        try {
+            // Import Pemilih data from Excel file
+            $importedDataWarga = Excel::toArray(new ImportDataWarga, $request->file('file'))[0];
+
+            // Initialize counters for success and failure tracking
+            $successDataCount = 0;
+            $failDataCount = 0;
+            $failedRows = [];
+            $errors = [];
+
+            // Loop through the imported data
+            foreach ($importedDataWarga as $index => $data) {
+                try {
+                    // Check if NIK already exists in the MasterDataWarga table
+                    $existingWarga = MasterDataWarga::where('nik', $data['nik'])->first();
+
+                    if ($existingWarga->status_bansos == '0') {
+                        // If not existing, create a new pemilih entry
+                        $existingWarga->status_bansos = '1';
+                        $existingWarga->save();
+                        $successDataCount++; // Increment success count
+                    } else {
+                        $errors[] = "NIK already exists for row " . ($index + 1);
+                        $failDataCount++; // Increment fail count
+                        $failedRows[] = $index + 1;
+                    }
+                } catch (\Exception $e) {
+                    // Handle any exception during the data import process
+                    $failDataCount++; // Increment fail count
+                    $failedRows[] = $index + 1;
+                    $errors[] = "Error on row " . ($index + 1) . ": " . $e->getMessage();
+                }
+            }
+
+            // Return success response with summary of import
+            return response()->json([
+                'message' => 'Bansos imported successfully.',
+                'success_data_count' => $successDataCount,
+                'fail_data_count' => $failDataCount,
+                'failed_rows' => $failedRows,
+                'errors' => $errors,
+            ]);
+        } catch (\Exception $e) {
+            // Return error response if the process fails
+            return response()->json(['message' => 'An error occurred while importing data.', 'error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function listBansos()
+    {
+        $dataPenerimaBansos = MasterDataWarga::get();
+
+        return response()->json([
+            'id' => '1',
+            'data' => $dataPenerimaBansos
+        ]);
     }
 
     // GET: Fetch all data warga
@@ -133,6 +203,7 @@ class DataWargaController extends Controller
             'nama' => 'required|string|max:255',
             'jenis_kelamin' => 'required|string|max:1', // Example: L for Male, P for Female
             'alamat' => 'required|string|max:255',
+            'kategori_warga' => 'required|string|max:255',
             'id_kelurahan' => 'required|integer',
         ]);
 
@@ -142,6 +213,7 @@ class DataWargaController extends Controller
             'nama' => $request->nama,
             'jenis_kelamin' => $request->jenis_kelamin,
             'alamat' => $request->alamat,
+            'kategori_warga' => $request->kategori_warga,
             'id_kelurahan' => $request->id_kelurahan,
         ]);
 
@@ -188,6 +260,7 @@ class DataWargaController extends Controller
             'nama' => 'sometimes|string|max:255',
             'jenis_kelamin' => 'sometimes|string|max:1',
             'alamat' => 'sometimes|string|max:255',
+            'kategori_warga' => 'sometimes|string|max:255',
             'id_kelurahan' => 'sometimes|integer',
         ]);
 

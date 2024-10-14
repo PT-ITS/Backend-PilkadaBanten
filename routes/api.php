@@ -62,15 +62,18 @@ Route::group([
     Route::group([
         'middleware' => 'auth:api'
     ], function () {
+        Route::get('/bansos', [DataWargaController::class, 'listBansos']);       // Get specific warga by ID
         Route::post('/import', [DataWargaController::class, 'importDataWarga']);
         Route::get('/list', [DataWargaController::class, 'listDataWarga']);          // Get all data warga
-        Route::get('/list/(id)', [DataWargaController::class, 'listDataWargaByPj']);          // Get all data warga
-        Route::post('/', [DataWargaController::class, 'store']);         // Create new warga
-        Route::get('/{id}', [DataWargaController::class, 'show']);       // Get specific warga by ID
-        Route::put('/{id}', [DataWargaController::class, 'update']);     // Update warga by ID
+        Route::get('/list/{id}', [DataWargaController::class, 'listDataWargaByPj']);          // Get all data warga
+        // Route::post('/', [DataWargaController::class, 'store']);         // Create new warga
+        // Route::get('/{id}', [DataWargaController::class, 'show']);       // Get specific warga by ID
+        // Route::put('/{id}', [DataWargaController::class, 'update']);     // Update warga by ID
         Route::delete('/{id}', [DataWargaController::class, 'destroy']); // Delete warga by ID
+        Route::post('/import-bansos', [DataWargaController::class, 'importDataPenerimaBansos']);
     });
 });
+
 
 Route::prefix('dpt')->group(function () {
     Route::post('/import', [DataDptController::class, 'importDataDpt']);
