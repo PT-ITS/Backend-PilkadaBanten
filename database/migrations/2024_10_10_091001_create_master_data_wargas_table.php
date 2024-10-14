@@ -19,6 +19,7 @@ class CreateMasterDataWargasTable extends Migration
             $table->string('nama');
             $table->enum('jenis_kelamin', ['L', 'P']);
             $table->string('alamat');
+            $table->string('kategori_warga');
             $table->string('id_kabupaten');
             $table->string('id_kecamatan');
             $table->string('id_kelurahan');

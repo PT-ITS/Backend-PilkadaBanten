@@ -19,7 +19,7 @@ class DataWargaController extends Controller
             // 'nik' => 'required',
             // 'nama' => 'required',
             // 'jenis_kelamin' => 'required',
-            // 'alamat' => 'required',
+            'kategori_warga' => 'required',
             'id_kabupaten' => 'required',
             'id_kecamatan' => 'required',
             'id_kelurahan' => 'required',
@@ -62,6 +62,7 @@ class DataWargaController extends Controller
                             'nama' => $data['nama'],
                             'jenis_kelamin' => $data['jenis_kelamin'],
                             'alamat' => $data['alamat'],
+                            'kategori_warga' => $request->kategori_warga,
                             'id_kabupaten' => $request->id_kabupaten,
                             'id_kecamatan' => $request->id_kecamatan,
                             'id_kelurahan' => $request->id_kelurahan,
@@ -133,6 +134,7 @@ class DataWargaController extends Controller
             'nama' => 'required|string|max:255',
             'jenis_kelamin' => 'required|string|max:1', // Example: L for Male, P for Female
             'alamat' => 'required|string|max:255',
+            'kategori_warga' => 'required|string|max:255',
             'id_kelurahan' => 'required|integer',
         ]);
 
@@ -142,6 +144,7 @@ class DataWargaController extends Controller
             'nama' => $request->nama,
             'jenis_kelamin' => $request->jenis_kelamin,
             'alamat' => $request->alamat,
+            'kategori_warga' => $request->kategori_warga,
             'id_kelurahan' => $request->id_kelurahan,
         ]);
 
@@ -188,6 +191,7 @@ class DataWargaController extends Controller
             'nama' => 'sometimes|string|max:255',
             'jenis_kelamin' => 'sometimes|string|max:1',
             'alamat' => 'sometimes|string|max:255',
+            'kategori_warga' => 'sometimes|string|max:255',
             'id_kelurahan' => 'sometimes|integer',
         ]);
 
