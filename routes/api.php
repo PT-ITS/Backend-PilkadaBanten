@@ -62,6 +62,7 @@ Route::group([
     Route::group([
         'middleware' => 'auth:api'
     ], function () {
+        Route::get('/export-bansos', [DataWargaController::class, 'exportBansosPdf']);       // Get specific warga by ID
         Route::get('/bansos', [DataWargaController::class, 'listBansos']);       // Get specific warga by ID
         Route::post('/import', [DataWargaController::class, 'importDataWarga']);
         Route::get('/list', [DataWargaController::class, 'listDataWarga']);          // Get all data warga

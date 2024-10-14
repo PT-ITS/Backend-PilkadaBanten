@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\MasterDataWarga;
 use App\Imports\ImportDataWarga;
+use App\Models\MasterKabupaten;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
@@ -152,6 +154,36 @@ class DataWargaController extends Controller
             // Return error response if the process fails
             return response()->json(['message' => 'An error occurred while importing data.', 'error' => $e->getMessage()], 500);
         }
+    }
+
+    public function exportBansosPdf()
+    {
+        // Get the data for each kabupaten/kota
+        $kabupatenData = MasterKabupaten::with(['wargas' => function ($query) {
+            $query->select('id_kabupaten')  // Only select id_kabupaten for grouping
+                ->selectRaw('COUNT(*) as total_warga')
+                ->selectRaw('SUM(CASE WHEN status_bansos = "1" THEN 1 ELSE 0 END) as sudah_terima')
+                ->selectRaw('SUM(CASE WHEN status_bansos = "0" THEN 1 ELSE 0 END) as belum_terima')
+                ->groupBy('id_kabupaten');  // Group by id_kabupaten only
+        }])->get();
+
+        // Initialize total counters
+        $totalWarga = 0;
+        $totalSudahTerima = 0;
+        $totalBelumTerima = 0;
+
+        // Calculate totals
+        foreach ($kabupatenData as $kabupaten) {
+            $totalWarga += $kabupaten->wargas->sum('total_warga');
+            $totalSudahTerima += $kabupaten->wargas->sum('sudah_terima');
+            $totalBelumTerima += $kabupaten->wargas->sum('belum_terima');
+        }
+
+        // Prepare the data for the PDF
+        $pdf = Pdf::loadView('pdf.bansos_report', compact('kabupatenData', 'totalWarga', 'totalSudahTerima', 'totalBelumTerima'));
+
+        // Return the PDF download
+        return $pdf->download('bansos_report.pdf');
     }
 
     public function listBansos()
