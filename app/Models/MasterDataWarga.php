@@ -15,6 +15,7 @@ class MasterDataWarga extends Model
         'jenis_kelamin',
         'alamat',
         'kategori_warga',
+        'status_bansos',
         'id_kabupaten',
         'id_kecamatan',
         'id_kelurahan',

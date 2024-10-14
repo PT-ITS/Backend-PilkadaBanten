@@ -18,6 +18,10 @@ class CreateMasterDataWargasTable extends Migration
             $table->string('nik');
             $table->string('nama');
             $table->enum('jenis_kelamin', ['L', 'P']);
+            $table->enum('status_bansos', [
+                '0', //belum 
+                '1' //sudah
+            ])->default('0');
             $table->string('alamat');
             $table->string('kategori_warga');
             $table->string('id_kabupaten');
