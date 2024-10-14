@@ -8,6 +8,7 @@ use App\Imports\ImportDataWarga;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
+use App\Exports\FailedWargaExport;
 
 class DataWargaController extends Controller
 {
@@ -16,45 +17,33 @@ class DataWargaController extends Controller
         // Validate the incoming request, including the Excel file and MasterDataWarga data
         $validator = Validator::make($request->all(), [
             'file' => 'required|mimes:xlsx,xls',
-            // 'nik' => 'required',
-            // 'nama' => 'required',
-            // 'jenis_kelamin' => 'required',
             'kategori_warga' => 'required',
             'id_kabupaten' => 'required',
             'id_kecamatan' => 'required',
             'id_kelurahan' => 'required',
-
         ]);
-
+    
         if ($validator->fails()) {
             return response()->json(['message' => 'Validation error', 'errors' => $validator->errors()], 422);
         }
-
+    
         try {
-            // Create new MasterDataWarga data
-            // $dataWarga = new MasterDataWarga();
-            // $dataWarga->nik = $request->nik;
-            // $dataWarga->nama = $request->nama;
-            // $dataWarga->jenis_kelamin = $request->jenis_kelamin;
-            // $dataWarga->alamat = $request->alamat;
-            // $dataWarga->id_kelurahan = $request->id_kelurahan;
-            // $dataWarga->save();
-
             // Import Pemilih data from Excel file
             $importedDataWarga = Excel::toArray(new ImportDataWarga, $request->file('file'))[0];
-
+    
             // Initialize counters for success and failure tracking
             $successDataCount = 0;
             $failDataCount = 0;
             $failedRows = [];
+            $failedData = [];
             $errors = [];
-
+    
             // Loop through the imported data
             foreach ($importedDataWarga as $index => $data) {
                 try {
                     // Check if NIK already exists in the MasterDataWarga table
                     $existingWarga = MasterDataWarga::where('nik', $data['nik'])->first();
-
+    
                     if (!$existingWarga) {
                         // If not existing, create a new pemilih entry
                         $wargaData = new MasterDataWarga([
@@ -74,15 +63,24 @@ class DataWargaController extends Controller
                         $errors[] = "NIK already exists for row " . ($index + 1);
                         $failDataCount++; // Increment fail count
                         $failedRows[] = $index + 1;
+                        $failedData[] = $existingWarga; // Simpan data yang gagal
                     }
                 } catch (\Exception $e) {
                     // Handle any exception during the data import process
                     $failDataCount++; // Increment fail count
                     $failedRows[] = $index + 1;
                     $errors[] = "Error on row " . ($index + 1) . ": " . $e->getMessage();
+                    $failedData[] = $data; // Simpan data yang gagal
                 }
             }
-
+    
+            // Jika ada data yang gagal, buat file Excel
+            if ($failDataCount > 0) {
+                // Generate Excel untuk data yang gagal
+                $fileName = 'failed_data_warga_' . now()->format('Ymd_His') . '.xlsx';
+                return Excel::download(new FailedWargaExport($failedData), $fileName);
+            }
+    
             // Return success response with summary of import
             return response()->json([
                 'message' => 'Data imported successfully.',
