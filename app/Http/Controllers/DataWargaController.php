@@ -10,7 +10,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
-use App\Exports\FailedWargaExport;
+use App\Exports\WargaSheetExport;
 
 class DataWargaController extends Controller
 {
@@ -33,10 +33,8 @@ class DataWargaController extends Controller
             // Import Pemilih data from Excel file
             $importedDataWarga = Excel::toArray(new ImportDataWarga, $request->file('file'))[0];
     
-            // Initialize counters for success and failure tracking
-            $successDataCount = 0;
-            $failDataCount = 0;
-            $failedRows = [];
+            // Initialize arrays for success and failure data
+            $successData = [];
             $failedData = [];
             $errors = [];
     
@@ -60,35 +58,28 @@ class DataWargaController extends Controller
                             'pj_id' => auth()->user()->id,
                         ]);
                         $wargaData->save();
-                        $successDataCount++; // Increment success count
+                        $successData[] = $wargaData->toArray(); // Simpan data yang sukses
                     } else {
                         $errors[] = "NIK already exists for row " . ($index + 1);
-                        $failDataCount++; // Increment fail count
-                        $failedRows[] = $index + 1;
                         $failedData[] = $existingWarga; // Simpan data yang gagal
                     }
                 } catch (\Exception $e) {
                     // Handle any exception during the data import process
-                    $failDataCount++; // Increment fail count
-                    $failedRows[] = $index + 1;
                     $errors[] = "Error on row " . ($index + 1) . ": " . $e->getMessage();
-                    $failedData[] = $data; // Simpan data yang gagal
+                    // $failedData[] = $data; // Simpan data yang gagal
                 }
             }
     
-            // Jika ada data yang gagal, buat file Excel
-            if ($failDataCount > 0) {
-                // Generate Excel untuk data yang gagal
-                $fileName = 'failed_data_warga_' . now()->format('Ymd_His') . '.xlsx';
-                return Excel::download(new FailedWargaExport($failedData), $fileName);
+            // Jika ada data yang gagal atau sukses, buat file Excel dengan dua sheet
+            if (count($successData) > 0 || count($failedData) > 0) {
+                return Excel::download(new WargaSheetExport($successData, $failedData), 'laporan_data_warga_export.xlsx');
             }
     
             // Return success response with summary of import
             return response()->json([
                 'message' => 'Data imported successfully.',
-                'success_data_count' => $successDataCount,
-                'fail_data_count' => $failDataCount,
-                'failed_rows' => $failedRows,
+                'success_data_count' => count($successData),
+                'fail_data_count' => count($failedData),
                 'errors' => $errors,
             ]);
         } catch (\Exception $e) {
@@ -96,6 +87,7 @@ class DataWargaController extends Controller
             return response()->json(['message' => 'An error occurred while importing data.', 'error' => $e->getMessage()], 500);
         }
     }
+    
 
     public function importDataPenerimaBansos(Request $request)
     {
