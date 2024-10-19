@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateJenisDukungansTable extends Migration
+class CreateMasterKelurahansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateJenisDukungansTable extends Migration
      */
     public function up()
     {
-        Schema::create('jenis_dukungans', function (Blueprint $table) {
+        Schema::create('master_kelurahans', function (Blueprint $table) {
             $table->id();
-            $table->string('jenis_dukungan');
-            $table->integer('jumlah');
-            $table->foreignId('dukungan_tokoh_id')->constrained('dukungan_tokohs')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('kecamatan_id');
+            $table->string('name');
+            $table->string('id_jenis');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateJenisDukungansTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('jenis_dukungans');
+        Schema::dropIfExists('master_kelurahans');
     }
 }

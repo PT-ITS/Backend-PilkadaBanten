@@ -9,13 +9,5 @@ class MasterKabupaten extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        "provinsi_id",
-        "name",
-    ];
-
-    public function wargas()
-    {
-        return $this->hasMany(MasterDataWarga::class, 'id_kabupaten', 'id');
-    }
+    protected $fillable = ['name', 'dpt', 'target'];
 }

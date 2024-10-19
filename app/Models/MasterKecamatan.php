@@ -9,8 +9,5 @@ class MasterKecamatan extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        "kabupaten_id",
-        "name",
-    ];
+    protected $fillable = ['kabupaten_id', 'name', 'dpt', 'target'];
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBantuanTokohsTable extends Migration
+class CreateMasterKabupatensTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateBantuanTokohsTable extends Migration
      */
     public function up()
     {
-        Schema::create('bantuan_tokohs', function (Blueprint $table) {
+        Schema::create('master_kabupatens', function (Blueprint $table) {
             $table->id();
-            $table->string('pelaksana');
-            $table->date('tanggal');
-            $table->string('lokasi');
-            $table->string('sasaran');
-            $table->string('penanggung_jawab');
+            $table->string('name');
+            $table->string('dpt')->nullable();
+            $table->string('target')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class CreateBantuanTokohsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bantuan_tokohs');
+        Schema::dropIfExists('master_kabupatens');
     }
 }
