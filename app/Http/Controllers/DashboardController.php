@@ -8,6 +8,8 @@ use App\Models\bantuan_tokoh;
 use App\Models\dukungan_tokoh;
 use App\Models\MasterDataDpt;
 use App\Models\MasterDataWarga;
+use App\Models\MasterKabupaten;
+use App\Models\MasterKecamatan;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -64,22 +66,44 @@ class DashboardController extends Controller
     //     return response()->json(['message' => 'success', 'data' => $years]);
     // }
 
-    public function listBarChartByKabupaten()
+    public function dashboardDataByKabupaten($id)
     {
-        $dptData = MasterDataDpt::selectRaw('id_kabupaten, COUNT(*) as count')
-            ->groupBy('id_kabupaten')
-            ->get();
-
-        $wargaData = MasterDataWarga::selectRaw('id_kabupaten, COUNT(*) as count')
-            ->groupBy('id_kabupaten')
-            ->get();
+        // Get all kecamatan based on kabupaten_id
+        $dptData = MasterKabupaten::get();
+        $nikData = MasterDataWarga::where('id_kabupaten', $id)->count();
 
         return response()->json([
             'message' => 'success',
             'data' => [
                 'dpt' => $dptData,
-                'warga' => $wargaData,
+                'warga' => $nikData
             ]
+        ]);
+    }
+
+    public function listBarChartByKabupaten($id)
+    {
+        // Get all kecamatan based on kabupaten_id
+        $kecamatanList = MasterKecamatan::where('kabupaten_id', $id)->get();
+
+        // Get warga data grouped by kecamatan
+        $wargaData = MasterDataWarga::selectRaw('id_kecamatan, COUNT(*) as count')
+            ->where('id_kabupaten', $id)
+            ->groupBy('id_kecamatan')
+            ->get()
+            ->keyBy('id_kecamatan'); // Key by id_kecamatan for easy lookup
+
+        // Map through each kecamatan and attach warga count or set to 0 if not available
+        $kecamatanData = $kecamatanList->map(function ($kecamatan) use ($wargaData) {
+            return [
+                'kecamatan_name' => $kecamatan->name,
+                'count' => $wargaData->get($kecamatan->id)->count ?? 0, // If no warga, count = 0
+            ];
+        });
+
+        return response()->json([
+            'message' => 'success',
+            'data' => $kecamatanData
         ]);
     }
 

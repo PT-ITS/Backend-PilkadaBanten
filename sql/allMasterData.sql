@@ -1,12 +1,12 @@
-INSERT INTO `master_kabupatens` (`id`, `name`) VALUES
-('3601', 'KAB. PANDEGLANG'),
-('3602', 'KAB. LEBAK'),
-('3603', 'KAB. TANGERANG'),
-('3604', 'KAB. SERANG'),
-('3671', 'KOTA TANGERANG'),
-('3672', 'KOTA CILEGON'),
-('3673', 'KOTA SERANG'),
-('3674', 'KOTA TANGERANG SELATAN');
+INSERT INTO `master_kabupatens` (`id`, `name`, `dpt`) VALUES
+('3601', 'KAB. PANDEGLANG', '994226'),
+('3602', 'KAB. LEBAK', '1057325'),
+('3603', 'KAB. TANGERANG', '2369021'),
+('3604', 'KAB. SERANG', '1225871'),
+('3671', 'KOTA TANGERANG', '1377828'),
+('3672', 'KOTA CILEGON', '330413'),
+('3673', 'KOTA SERANG', '513851'),
+('3674', 'KOTA TANGERANG SELATAN', '1058127');
 
 INSERT INTO `master_kecamatans` (`id`, `kabupaten_id`, `name`) VALUES
 ('360101', '3601', 'SUMUR'),

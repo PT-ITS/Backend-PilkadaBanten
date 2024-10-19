@@ -17,13 +17,13 @@ class CreateMasterDataWargasTable extends Migration
             $table->id();
             $table->string('nik');
             $table->string('nama');
-            $table->enum('jenis_kelamin', ['L', 'P']);
+            $table->enum('jenis_kelamin', ['L', 'P'])->nullable();
             $table->enum('status_bansos', [
                 '0', //belum 
                 '1' //sudah
             ])->default('0');
-            $table->string('alamat');
-            $table->string('kategori_warga');
+            $table->string('alamat')->nullable();
+            $table->string('kategori_warga')->nullable();
             $table->string('id_kabupaten');
             $table->string('id_kecamatan');
             $table->string('id_kelurahan');
