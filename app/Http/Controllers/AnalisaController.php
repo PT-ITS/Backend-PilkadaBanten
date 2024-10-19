@@ -24,7 +24,7 @@ class AnalisaController extends Controller
             // Ambil kecamatan berdasarkan kabupaten_id
             $listKecamatan = MasterKecamatan::where('kabupaten_id', $kabupaten->id)->get();
 
-            $totalDpt = MasterDataDpt::where('id_kabupaten', $kabupaten->id)->count();
+            $totalDpt = $kabupaten->dpt;
 
             $totalWarga = MasterDataWarga::where('id_kabupaten', $kabupaten->id)->count();
 
@@ -78,7 +78,7 @@ class AnalisaController extends Controller
             // Hitung jumlah kelurahan berdasarkan kecamatan_id
             $jumlahKelurahan = MasterKelurahan::where('kecamatan_id', $kecamatan->id)->count();
 
-            $totalDpt = MasterDataDpt::where('id_kecamatan', $kecamatan->id)->count();
+            $totalDpt = $kecamatan->dpt;
 
             $totalWarga = MasterDataWarga::where('id_kecamatan', $kecamatan->id)->count();
 
@@ -120,7 +120,7 @@ class AnalisaController extends Controller
 
         // Looping melalui kelurahan
         foreach ($listKelurahan as $kelurahan) {
-            $totalDpt = MasterDataDpt::where('id_kelurahan', $kelurahan->id)->count();
+            // $totalDpt = $kelurahan->dpt;
 
             $totalWarga = MasterDataWarga::where('id_kelurahan', $kelurahan->id)->count();
 
@@ -138,7 +138,7 @@ class AnalisaController extends Controller
                 'id' => $kelurahan->id,
                 'nama' => $kelurahan->name,
                 'jenis' => $kelurahan->id_jenis,
-                'total_dpt' => $totalDpt,
+                // 'total_dpt' => $totalDpt,
                 'total_warga' => $totalWarga,
                 // 'jumlah_pria' => $jumlahPria,
                 // 'jumlah_wanita' => $jumlahWanita,
