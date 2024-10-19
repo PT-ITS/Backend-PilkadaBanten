@@ -15,7 +15,7 @@ class AnalisaController extends Controller
     public function listKabupaten()
     {
         // Ambil kabupaten berdasarkan provinsi_id tertentu
-        $listKabupaten = MasterKabupaten::where('provinsi_id', '36')->get();
+        $listKabupaten = MasterKabupaten::get();
 
         // Buat array untuk menampung hasil akhir
         $result = [];
@@ -29,13 +29,13 @@ class AnalisaController extends Controller
             $totalWarga = MasterDataWarga::where('id_kabupaten', $kabupaten->id)->count();
 
             // Menghitung jumlah warga berdasarkan jenis kelamin
-            $jumlahPria = MasterDataWarga::where('id_kabupaten', $kabupaten->id)
-                ->where('jenis_kelamin', 'L')
-                ->count();
+            // $jumlahPria = MasterDataWarga::where('id_kabupaten', $kabupaten->id)
+            //     ->where('jenis_kelamin', 'L')
+            //     ->count();
 
-            $jumlahWanita = MasterDataWarga::where('id_kabupaten', $kabupaten->id)
-                ->where('jenis_kelamin', 'P')
-                ->count();
+            // $jumlahWanita = MasterDataWarga::where('id_kabupaten', $kabupaten->id)
+            //     ->where('jenis_kelamin', 'P')
+            //     ->count();
 
             // Hitung jumlah kelurahan di setiap kecamatan
             $jumlahKelurahan = 0;
@@ -83,13 +83,13 @@ class AnalisaController extends Controller
             $totalWarga = MasterDataWarga::where('id_kecamatan', $kecamatan->id)->count();
 
             // Menghitung jumlah warga berdasarkan jenis kelamin
-            $jumlahPria = MasterDataWarga::where('id_kecamatan', $kecamatan->id)
-                ->where('jenis_kelamin', 'L')
-                ->count();
+            // $jumlahPria = MasterDataWarga::where('id_kecamatan', $kecamatan->id)
+            //     ->where('jenis_kelamin', 'L')
+            //     ->count();
 
-            $jumlahWanita = MasterDataWarga::where('id_kecamatan', $kecamatan->id)
-                ->where('jenis_kelamin', 'P')
-                ->count();
+            // $jumlahWanita = MasterDataWarga::where('id_kecamatan', $kecamatan->id)
+            //     ->where('jenis_kelamin', 'P')
+            //     ->count();
 
             // Tambahkan data ke array
             $kecamatanData[] = [
@@ -125,13 +125,13 @@ class AnalisaController extends Controller
             $totalWarga = MasterDataWarga::where('id_kelurahan', $kelurahan->id)->count();
 
             // Menghitung jumlah warga berdasarkan jenis kelamin
-            $jumlahPria = MasterDataWarga::where('id_kelurahan', $kelurahan->id)
-                ->where('jenis_kelamin', 'L')
-                ->count();
+            // $jumlahPria = MasterDataWarga::where('id_kelurahan', $kelurahan->id)
+            //     ->where('jenis_kelamin', 'L')
+            //     ->count();
 
-            $jumlahWanita = MasterDataWarga::where('id_kelurahan', $kelurahan->id)
-                ->where('jenis_kelamin', 'P')
-                ->count();
+            // $jumlahWanita = MasterDataWarga::where('id_kelurahan', $kelurahan->id)
+            //     ->where('jenis_kelamin', 'P')
+            //     ->count();
 
             // Tambahkan data kelurahan ke array
             $kelurahanData[] = [
