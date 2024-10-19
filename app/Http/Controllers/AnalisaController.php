@@ -53,8 +53,8 @@ class AnalisaController extends Controller
                 'jumlah_kelurahan' => $jumlahKelurahan,
                 'total_dpt' => $totalDpt,
                 'total_warga' => $totalWarga,
-                'jumlah_pria' => $jumlahPria,
-                'jumlah_wanita' => $jumlahWanita,
+                // 'jumlah_pria' => $jumlahPria,
+                // 'jumlah_wanita' => $jumlahWanita,
             ];
         }
 
@@ -98,8 +98,8 @@ class AnalisaController extends Controller
                 'jumlah_kelurahan' => $jumlahKelurahan,
                 'total_dpt' => $totalDpt,
                 'total_warga' => $totalWarga,
-                'jumlah_pria' => $jumlahPria,
-                'jumlah_wanita' => $jumlahWanita,
+                // 'jumlah_pria' => $jumlahPria,
+                // 'jumlah_wanita' => $jumlahWanita,
             ];
         }
 
@@ -140,8 +140,8 @@ class AnalisaController extends Controller
                 'jenis' => $kelurahan->id_jenis,
                 'total_dpt' => $totalDpt,
                 'total_warga' => $totalWarga,
-                'jumlah_pria' => $jumlahPria,
-                'jumlah_wanita' => $jumlahWanita,
+                // 'jumlah_pria' => $jumlahPria,
+                // 'jumlah_wanita' => $jumlahWanita,
             ];
         }
 
