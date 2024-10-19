@@ -41,7 +41,7 @@ class WargaSheetExport implements WithMultipleSheets
                         return [
                             'nik' => $data['nik'],
                             'nama' => $data['nama'],
-                            'jenis_kelamin' => $data['jenis_kelamin'],
+                            // 'jenis_kelamin' => $data['jenis_kelamin'],
                             'kategori' => $data['kategori_warga'],
                             'alamat' => $data['alamat'],
                         ];
@@ -53,7 +53,7 @@ class WargaSheetExport implements WithMultipleSheets
                     return [
                         'NIK',
                         'Nama',
-                        'Jenis Kelamin',
+                        // 'Jenis Kelamin',
                         'Kategori',
                         'Alamat',
                     ];

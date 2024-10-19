@@ -19,7 +19,7 @@ class DataWargaController extends Controller
         // Validate the incoming request, including the Excel file and MasterDataWarga data
         $validator = Validator::make($request->all(), [
             'file' => 'required|mimes:xlsx,xls',
-            'kategori_warga' => 'required',
+            // 'kategori_warga' => 'required',
             'id_kabupaten' => 'required',
             'id_kecamatan' => 'required',
             'id_kelurahan' => 'required',
@@ -49,7 +49,7 @@ class DataWargaController extends Controller
                         $wargaData = new MasterDataWarga([
                             'nik' => $data['nik'],
                             'nama' => $data['nama'],
-                            'jenis_kelamin' => $data['jenis_kelamin'],
+                            // 'jenis_kelamin' => $data['jenis_kelamin'],
                             'alamat' => $data['alamat'],
                             'kategori_warga' => $request->kategori_warga,
                             'id_kabupaten' => $request->id_kabupaten,
