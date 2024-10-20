@@ -22,7 +22,7 @@ class DataWargaController extends Controller
             // 'kategori_warga' => 'required',
             'id_kabupaten' => 'required',
             'id_kecamatan' => 'required',
-            'id_kelurahan' => 'required',
+            // 'id_kelurahan' => 'required',
         ]);
 
         if ($validator->fails()) {

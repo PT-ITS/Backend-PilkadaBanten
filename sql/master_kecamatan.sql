@@ -30,7 +30,8 @@ SET time_zone = "+00:00";
 CREATE TABLE `master_kecamatans` (
   `id` char(6) NOT NULL,
   `kabupaten_id` char(4) NOT NULL,
-  `name` tinytext NOT NULL
+  `name` tinytext NOT NULL,
+  `dpt` varchar(255) DEFAULT NULL,
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --

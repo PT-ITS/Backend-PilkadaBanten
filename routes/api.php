@@ -9,6 +9,22 @@ use App\Http\Controllers\DataDptController;
 use App\Http\Controllers\LokasiController;
 use App\Http\Controllers\DashboardController;
 
+use App\Exports\DataLokasiExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\DB;
+
+Route::get('/export-lokasi', function () {
+    // Menjalankan query untuk mendapatkan data yang akan diekspor
+    $data = DB::table('master_kelurahans AS kel')
+        ->join('master_kecamatans AS kec', 'kel.kecamatan_id', '=', 'kec.id')
+        ->join('master_kabupatens AS kab', 'kec.kabupaten_id', '=', 'kab.id')
+        ->select('kab.name AS kabupaten', 'kec.name AS kecamatan', 'kel.name AS kelurahan')
+        ->get();
+
+    return Excel::download(new DataLokasiExport($data), 'data_lokasi.xlsx');
+});
+
+
 Route::group([
     'prefix' => 'auth'
 ], function () {
