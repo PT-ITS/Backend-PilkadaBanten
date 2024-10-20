@@ -24,26 +24,26 @@ class DataWargaController extends Controller
             'id_kecamatan' => 'required',
             'id_kelurahan' => 'required',
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json(['message' => 'Validation error', 'errors' => $validator->errors()], 422);
         }
-    
+
         try {
             // Import Pemilih data from Excel file
             $importedDataWarga = Excel::toArray(new ImportDataWarga, $request->file('file'))[0];
-    
+
             // Initialize arrays for success and failure data
             $successData = [];
             $failedData = [];
             $errors = [];
-    
+
             // Loop through the imported data
             foreach ($importedDataWarga as $index => $data) {
                 try {
                     // Check if NIK already exists in the MasterDataWarga table
                     $existingWarga = MasterDataWarga::where('nik', $data['nik'])->first();
-    
+
                     if (!$existingWarga) {
                         // If not existing, create a new pemilih entry
                         $wargaData = new MasterDataWarga([
@@ -69,12 +69,12 @@ class DataWargaController extends Controller
                     // $failedData[] = $data; // Simpan data yang gagal
                 }
             }
-    
+
             // Jika ada data yang gagal atau sukses, buat file Excel dengan dua sheet
             if (count($successData) > 0 || count($failedData) > 0) {
                 return Excel::download(new WargaSheetExport($successData, $failedData), 'laporan_data_warga_export.xlsx');
             }
-    
+
             // Return success response with summary of import
             return response()->json([
                 'message' => 'Data imported successfully.',
@@ -87,7 +87,7 @@ class DataWargaController extends Controller
             return response()->json(['message' => 'An error occurred while importing data.', 'error' => $e->getMessage()], 500);
         }
     }
-    
+
 
     public function importDataPenerimaBansos(Request $request)
     {
@@ -189,13 +189,18 @@ class DataWargaController extends Controller
     }
 
     // GET: Fetch all data warga
-    public function listDataWarga()
+    public function listDataWarga(Request $request)
     {
+        // Define the number of records per page
+        $perPage = $request->get('perPage', 10); // default to 10 if not specified
+
+        // Fetch paginated data
         $dataWarga = MasterDataWarga::join('master_kabupatens', 'master_data_wargas.id_kabupaten', '=', 'master_kabupatens.id')
             ->join('master_kecamatans', 'master_data_wargas.id_kecamatan', '=', 'master_kecamatans.id')
             ->join('master_kelurahans', 'master_data_wargas.id_kelurahan', '=', 'master_kelurahans.id')
             ->select('master_data_wargas.*', 'master_kabupatens.name AS nama_kabupaten', 'master_kecamatans.name AS nama_kecamatan', 'master_kelurahans.name AS nama_kelurahan')
-            ->get();
+            ->paginate($perPage); // Use pagination
+
         return response()->json([
             'status' => 'success',
             'data' => $dataWarga
