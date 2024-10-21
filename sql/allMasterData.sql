@@ -8,13 +8,6 @@ INSERT INTO `master_kabupatens` (`id`, `name`, `dpt`) VALUES
 ('3673', 'KOTA SERANG', '513851'),
 ('3674', 'KOTA TANGERANG SELATAN', '1058127');
 
-CREATE TABLE `master_kecamatans` (
-  `id` char(6) NOT NULL,
-  `kabupaten_id` char(4) NOT NULL,
-  `name` tinytext NOT NULL,
-  `dpt` varchar(255) NULL,
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
 INSERT INTO `master_kecamatans` (`id`, `kabupaten_id`, `name`, `dpt`) VALUES
 ('360101', '3601', 'SUMUR', '19690'),
 ('360102', '3601', 'CIMANGGU', '30880'),

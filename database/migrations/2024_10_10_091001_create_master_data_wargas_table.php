@@ -15,7 +15,7 @@ class CreateMasterDataWargasTable extends Migration
     {
         Schema::create('master_data_wargas', function (Blueprint $table) {
             $table->id();
-            $table->string('nik');
+            $table->string('nik')->unique();
             $table->string('nama');
             $table->enum('jenis_kelamin', ['L', 'P'])->nullable();
             $table->enum('status_bansos', [
